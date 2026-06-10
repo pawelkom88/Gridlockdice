@@ -1,0 +1,14 @@
+{
+  "products" : [
+    {
+      "displayName" : "Full Game Unlock",
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "productID" : "full_game_unlock",
+      "productType" : "NonConsumable",
+      "subscriptionGroupID" : ""
+    }
+  ],
+  "storefrontLocaleIdentifier" : "en_US",
+  "version" : "2"
+}
