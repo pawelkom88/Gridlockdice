@@ -3,6 +3,7 @@ import Foundation
 protocol PersistenceStore: AnyObject {
     var completedLevels: Set<Int> { get set }
     var isUnlocked: Bool { get set }
+    var hasSeenOnboarding: Bool { get set }
 }
 
 final class UserDefaultsStore: PersistenceStore {
@@ -25,5 +26,10 @@ final class UserDefaultsStore: PersistenceStore {
     var isUnlocked: Bool {
         get { defaults.bool(forKey: "isUnlocked") }
         set { defaults.set(newValue, forKey: "isUnlocked") }
+    }
+
+    var hasSeenOnboarding: Bool {
+        get { defaults.bool(forKey: "hasSeenOnboarding") }
+        set { defaults.set(newValue, forKey: "hasSeenOnboarding") }
     }
 }

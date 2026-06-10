@@ -33,6 +33,7 @@ final class GameViewModel {
     var hoverRow: Int?
     var hoverCol: Int?
     var boardFrame: CGRect = .zero
+    var showOnboarding: Bool = false
 
     var shakingPieceID: String?
     var snappingPieceID: String?
@@ -209,6 +210,11 @@ final class AppViewModel {
         didSet { store.isUnlocked = isUnlocked }
     }
 
+    var hasSeenOnboarding: Bool {
+        get { store.hasSeenOnboarding }
+        set { store.hasSeenOnboarding = newValue }
+    }
+
     var priceText: String { purchaseService.priceText }
     var productAvailable: Bool { purchaseService.productAvailable }
 
@@ -252,6 +258,9 @@ final class AppViewModel {
         }
 
         let vm = GameViewModel(level: def)
+        if id == 1 && !hasSeenOnboarding {
+            vm.showOnboarding = true
+        }
         vm.onSolved = { [weak self] elapsed in
             guard let self else { return }
             self.completedIDs.insert(id)

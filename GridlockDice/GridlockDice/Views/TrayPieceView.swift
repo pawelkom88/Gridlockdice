@@ -48,9 +48,11 @@ struct TrayPieceView: View {
                 vm.rotatePiece(id: piece.id)
             }
             .gesture(
-                DragGesture(minimumDistance: 8, coordinateSpace: .global)
+                DragGesture(minimumDistance: 20, coordinateSpace: .global)
                     .onChanged { value in
                         if vm.dragState == nil || vm.dragState?.piece.id != piece.id {
+                            // Only initiate dragging if the movement is primarily vertical
+                            guard abs(value.translation.height) > abs(value.translation.width) else { return }
                             vm.dragState = DragState(piece: piece, location: value.location)
                         }
                         vm.updateHover(globalLocation: value.location, cellSize: cellSize)

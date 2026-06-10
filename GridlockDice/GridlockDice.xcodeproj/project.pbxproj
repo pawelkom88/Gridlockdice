@@ -31,6 +31,7 @@
 		9004359CD73E4DCAAF68D473 /* PuzzleSolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6E08B0E1F425C99EBE812 /* PuzzleSolverTests.swift */; };
 		927664F8AE9B43729DDA7EEC /* DragFeedbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B511BCE7EFF4724B94F36E6 /* DragFeedbackTests.swift */; };
 		92E5D92993484AECBC3E17CB /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46966A877F343C4928B8C57 /* GameView.swift */; };
+		F3A800010000000000000001 /* OnboardingOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A800020000000000000002 /* OnboardingOverlayView.swift */; };
 		960C61681B3E4603BA65E1DF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BD9AB2D2674288937A222B /* RootView.swift */; };
 		961BB943685F4925B8511EE2 /* RotationGatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB3C5398DB1408E90D040A9 /* RotationGatingTests.swift */; };
 		99148BADFD04483C91568F5E /* SmokeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58620C83E06C481589335E47 /* SmokeTests.swift */; };
@@ -93,6 +94,7 @@
 		CD195AF0DD674262A6F7D47D /* CellSizingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellSizingTests.swift; sourceTree = "<group>"; };
 		D3727D43FDF34D9CA5373C3D /* CompletionFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionFlowTests.swift; sourceTree = "<group>"; };
 		D46966A877F343C4928B8C57 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		F3A800020000000000000002 /* OnboardingOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingOverlayView.swift; sourceTree = "<group>"; };
 		D5D8E6322E264CC48502F83D /* ThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeTests.swift; sourceTree = "<group>"; };
 		D6B6E08B0E1F425C99EBE812 /* PuzzleSolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleSolverTests.swift; sourceTree = "<group>"; };
 		E6D0E97CCF4D4FC8B597BAA7 /* PuzzleSolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleSolver.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				3523397AA6194999A3B6464A /* TrayPieceView.swift */,
 				111EFFEBD8834F02ABF29174 /* GhostPieceView.swift */,
 				D46966A877F343C4928B8C57 /* GameView.swift */,
+				F3A800020000000000000002 /* OnboardingOverlayView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -293,7 +296,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2600;
-				LastUpgradeCheck = 2600;
+				LastUpgradeCheck = 2650;
 			};
 			buildConfigurationList = 35D1CC94B0E24FC7A33049D3 /* Build configuration list for PBXProject "GridlockDice" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -352,6 +355,7 @@
 				4A925374C8FE4CAEBEFCDD37 /* TrayPieceView.swift in Sources */,
 				7757511C1C3546CD80924990 /* GhostPieceView.swift in Sources */,
 				92E5D92993484AECBC3E17CB /* GameView.swift in Sources */,
+				F3A800010000000000000001 /* OnboardingOverlayView.swift in Sources */,
 				0BA2E875103B4B2A90A0AD35 /* CellSizingCalculator.swift in Sources */,
 				BD4693DAD0D1412B8F795E68 /* PersistenceStore.swift in Sources */,
 				8F90ED1EE92B45429A709BC2 /* PurchaseService.swift in Sources */,
@@ -400,6 +404,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -453,6 +458,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -526,6 +532,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -572,6 +579,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};

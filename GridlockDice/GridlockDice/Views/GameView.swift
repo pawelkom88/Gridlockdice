@@ -12,14 +12,23 @@ struct GameView: View {
     private let calc = CellSizingCalculator()
 
     var body: some View {
-        VStack(spacing: 0) {
-            headerBar
-            progressStrip
-            boardArea
-            trayShelf
+        ZStack {
+            VStack(spacing: 0) {
+                headerBar
+                progressStrip
+                boardArea
+                trayShelf
+            }
+            .background(Color.bg0)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+            if vm.showOnboarding {
+                OnboardingOverlayView()
+                    .environment(appVM)
+                    .environment(vm)
+                    .transition(.opacity)
+            }
         }
-        .background(Color.bg0)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     // MARK: - Header
@@ -48,6 +57,20 @@ struct GameView: View {
                     .foregroundStyle(Color.label3)
             }
             Spacer()
+            
+            Button {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) {
+                    vm.showOnboarding = true
+                }
+            } label: {
+                Image(systemName: "questionmark")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(Color.label2)
+                    .frame(width: 36, height: 36)
+                    .background(Color.fill3)
+                    .clipShape(Circle())
+            }
+
             Button {
                 vm.reset()
             } label: {
@@ -145,7 +168,7 @@ struct GameView: View {
             .padding(.bottom, 6)
 
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 10) {
+                HStack(spacing: 20) {
                     ForEach(vm.trayPieces) { piece in
                         TrayPieceView(piece: piece, cellSize: activeCellSize)
                             .environment(vm)
