@@ -72,6 +72,17 @@ struct GameView: View {
             }
 
             Button {
+                vm.autoSolve()
+            } label: {
+                Image(systemName: "wand.and.stars")
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundStyle(Color.accentPurple)
+                    .frame(width: 36, height: 36)
+                    .background(Color.fill3)
+                    .clipShape(Circle())
+            }
+
+            Button {
                 vm.reset()
             } label: {
                 Image(systemName: "arrow.counterclockwise")

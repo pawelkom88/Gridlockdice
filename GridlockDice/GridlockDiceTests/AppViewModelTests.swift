@@ -108,6 +108,7 @@ final class AppViewModelTests: XCTestCase {
 final class InMemoryStore: PersistenceStore {
     var completedLevels: Set<Int> = []
     var isUnlocked: Bool = false
+    var hasSeenOnboarding: Bool = false
 }
 
 @MainActor

@@ -116,7 +116,7 @@ struct OnboardingOverlayView: View {
             }
 
             VStack(spacing: 6) {
-                Text("Gridlock Dice")
+                Text(Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? "Gridlock" + " " + "Dice")
                     .font(.system(size: 20, weight: .bold))
                     .foregroundStyle(Color.label1)
                 Text("THE OBJECTIVE")

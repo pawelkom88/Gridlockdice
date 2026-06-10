@@ -136,11 +136,11 @@ final class ScopeGuardTests: XCTestCase {
 
     func testOnlyOneStoreProductDefined() {
         let content = readAllSources()
-        let pattern = "\"full_game_unlock\""
+        let pattern = "\"gridlockdice.lifetime.unlock\""
         guard let regex = try? NSRegularExpression(pattern: pattern) else { return }
         let matches = regex.matches(in: content, range: NSRange(content.startIndex..., in: content))
-        XCTAssertTrue(matches.count >= 1, "Product ID full_game_unlock should be defined")
-        XCTAssertTrue(matches.count <= 2, "Should not define extra product IDs beyond full_game_unlock")
+        XCTAssertTrue(matches.count >= 1, "Product ID gridlockdice.lifetime.unlock should be defined")
+        XCTAssertTrue(matches.count <= 2, "Should not define extra product IDs beyond gridlockdice.lifetime.unlock")
     }
 
     // MARK: - No third-party dependencies

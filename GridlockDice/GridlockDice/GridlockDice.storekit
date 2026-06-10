@@ -4,7 +4,7 @@
       "displayName" : "Full Game Unlock",
       "displayPrice" : "2.99",
       "familyShareable" : false,
-      "productID" : "full_game_unlock",
+      "productID" : "gridlockdice.lifetime.unlock",
       "productType" : "NonConsumable",
       "subscriptionGroupID" : ""
     }

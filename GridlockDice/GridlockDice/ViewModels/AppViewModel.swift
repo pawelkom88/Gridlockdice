@@ -181,6 +181,23 @@ final class GameViewModel {
         startTimer()
     }
 
+    func autoSolve() {
+        reset()
+        guard let steps = PuzzleSolver.findSolution(level: level) else { return }
+        Task {
+            for step in steps {
+                guard let idx = trayPieces.firstIndex(where: { $0.id == step.pieceID }) else { continue }
+                var rotations = 0
+                while trayPieces[idx].shape != step.shape, rotations < 4 {
+                    trayPieces[idx].rotateCW()
+                    rotations += 1
+                }
+                tryPlace(pieceID: step.pieceID, at: step.row, col: step.col)
+                try? await Task.sleep(nanoseconds: 200_000_000)
+            }
+        }
+    }
+
     internal func triggerShake(id: String) {
         withAnimation(.default) { shakingPieceID = id }
         Task {

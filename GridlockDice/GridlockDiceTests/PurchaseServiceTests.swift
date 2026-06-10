@@ -32,7 +32,7 @@ final class PurchaseServiceTests: XCTestCase {
     // MARK: - Product ID
 
     func testPurchaseManagerRequestsFullGameUnlockProduct() {
-        XCTAssertEqual(StoreKitPurchaseService.productID, "full_game_unlock")
+        XCTAssertEqual(StoreKitPurchaseService.productID, "gridlockdice.lifetime.unlock")
     }
 
     // MARK: - Purchase

@@ -47,6 +47,7 @@
 		D05ADCD1990643E1BF2F1442 /* LevelCatalogueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4A436777744DBB877CE1F6 /* LevelCatalogueTests.swift */; };
 		E5CD014ECC114D9F984516AA /* ResponsiveLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE6101D8FF546F18FB2C5EE /* ResponsiveLayoutTests.swift */; };
 		F9640972C20845BEB1C7EF65 /* GameScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A7A0E8A56E4167B20A01F2 /* GameScreenTests.swift */; };
+		F3A800040000000000000004 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3A800030000000000000003 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +103,7 @@
 		EC2BB23F78154823BEA8F2E5 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		F130C8D94BAA4310AA1822D1 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		F20517F598B84E0186D6B9D1 /* AppViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModelTests.swift; sourceTree = "<group>"; };
+		F3A800030000000000000003 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,6 +196,7 @@
 		79BA7173CB404A9596C12F47 /* GridlockDice */ = {
 			isa = PBXGroup;
 			children = (
+				F3A800030000000000000003 /* Assets.xcassets */,
 				A7AFF842D1A1463A9C3C808B /* AppBuildInfo.swift */,
 				C3A2E663578E455D97FB3E81 /* GridlockDiceApp.swift */,
 				4EFCBF752B64442E9836DD5E /* App */,
@@ -322,6 +325,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F3A800040000000000000004 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -509,6 +513,7 @@
 				DEVELOPMENT_TEAM = PSTSAVTG6S;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleIconName = AppIcon;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -594,6 +599,7 @@
 				DEVELOPMENT_TEAM = PSTSAVTG6S;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleIconName = AppIcon;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

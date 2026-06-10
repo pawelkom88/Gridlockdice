@@ -153,47 +153,83 @@ struct LevelCatalogue {
         }
     }
 
-    private static let shapeBank: [(name: String, cells: Int, shape: [[Int]])] = [
-        ("1×1", 1, [[1]]),
-        ("2×1h", 2, [[1,1]]),
-        ("3×1h", 3, [[1,1,1]]),
-        ("2×2",  4, [[1,1],[1,1]]),
-    ]
-
     private static func makePieces(remaining: Int, boardSize: Int, dice: [DiceMarker],
-                                    startID: Int, colors: [PieceColorName]) -> [PieceDef] {
-        let padded = colors + colors
-        func generate() -> [PieceDef] {
-            var pieces: [PieceDef] = []
-            var left = remaining
-            var pc = startID
-            while left > 0 {
-                let idx = pieces.count
-                if left >= 4 && boardSize >= 6 && idx % 7 == 0 {
-                    pieces.append(PieceDef(id: "p\(pc)", color: padded[idx % padded.count], rows: [[1,1],[1,1]]))
-                    pc += 1; left -= 4
-                } else if left >= 3 && idx % 5 == 0 {
-                    pieces.append(PieceDef(id: "p\(pc)", color: padded[idx % padded.count], rows: [[1,1,1]]))
-                    pc += 1; left -= 3
-                } else if left >= 2 {
-                    pieces.append(PieceDef(id: "p\(pc)", color: padded[idx % padded.count], rows: [[1,1]]))
-                    pc += 1; left -= 2
-                } else {
-                    pieces.append(PieceDef(id: "p\(pc)", color: padded[idx % padded.count], rows: [[1]]))
-                    pc += 1; left -= 1
+                                    startID: Int, colors: [PieceColorName], allowsRotation: Bool) -> [PieceDef] {
+        var assigned = Array(repeating: Array(repeating: false, count: boardSize), count: boardSize)
+        for d in dice {
+            assigned[d.row][d.col] = true
+        }
+
+        var rng = startID + boardSize * 17
+        func nextRand() -> Int {
+            rng = (rng * 1103515245 + 12345) & 0x7fffffff
+            return rng
+        }
+
+        var pieces: [PieceDef] = []
+        var pc = startID
+        let paddedColors = colors + colors + colors
+
+        for r in 0..<boardSize {
+            for c in 0..<boardSize {
+                if assigned[r][c] { continue }
+
+                // Start a new piece at (r, c)
+                var cells = [(r, c)]
+                assigned[r][c] = true
+
+                // Determine target size: 4 (40%), 3 (30%), 2 (20%), 1 (10%)
+                let roll = nextRand() % 100
+                let targetSize: Int
+                if roll < 40 { targetSize = 4 }
+                else if roll < 70 { targetSize = 3 }
+                else if roll < 90 { targetSize = 2 }
+                else { targetSize = 1 }
+
+                while cells.count < targetSize {
+                    // Find all unassigned neighbors of any cell in the current piece
+                    var neighbors: [(Int, Int)] = []
+                    for cell in cells {
+                        let dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+                        for dir in dirs {
+                            let nr = cell.0 + dir.0
+                            let nc = cell.1 + dir.1
+                            if nr >= 0 && nr < boardSize && nc >= 0 && nc < boardSize {
+                                if !assigned[nr][nc] && !neighbors.contains(where: { $0.0 == nr && $0.1 == nc }) {
+                                    neighbors.append((nr, nc))
+                                }
+                            }
+                        }
+                    }
+
+                    if neighbors.isEmpty { break }
+
+                    // Randomly select one neighbor
+                    let chosen = neighbors[nextRand() % neighbors.count]
+                    cells.append(chosen)
+                    assigned[chosen.0][chosen.1] = true
                 }
+
+                // Create PieceDef from cells
+                let minR = cells.map { $0.0 }.min()!
+                let maxR = cells.map { $0.0 }.max()!
+                let minC = cells.map { $0.1 }.min()!
+                let maxC = cells.map { $0.1 }.max()!
+
+                let h = maxR - minR + 1
+                let w = maxC - minC + 1
+                var shapeGrid = Array(repeating: Array(repeating: 0, count: w), count: h)
+                for cell in cells {
+                    shapeGrid[cell.0 - minR][cell.1 - minC] = 1
+                }
+
+                let color = paddedColors[pieces.count % paddedColors.count]
+                pieces.append(PieceDef(id: "p\(pc)", color: color, rows: shapeGrid))
+                pc += 1
             }
-            return pieces
         }
-        let pieces = generate()
-        let level = LevelDef(id: 0, name: "", subtitle: "", rows: boardSize, cols: boardSize,
-                             dice: dice, pieces: pieces)
-        if PuzzleSolver.isSolvable(level: level) {
-            return pieces
-        }
-        return (0..<remaining).map { i in
-            PieceDef(id: "p\(startID + i)", color: colors[i % colors.count], rows: [[1]])
-        }
+
+        return pieces
     }
 
     private static func buildCatalogue() -> [LevelDef] {
@@ -228,8 +264,9 @@ struct LevelCatalogue {
                _ diceCoords: [(Int, Int)]) {
             let remaining = size * size - diceCoords.count
             let dice = diceMarkers(from: diceCoords)
+            let allowsRotation = (id >= 21)
             let pieces = makePieces(remaining: remaining, boardSize: size, dice: dice,
-                                    startID: pc, colors: clr)
+                                    startID: pc, colors: clr, allowsRotation: allowsRotation)
             pc += pieces.count
             levels.append(LevelDef(
                 id: id, name: name, subtitle: subtitle,

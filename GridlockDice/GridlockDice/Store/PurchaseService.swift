@@ -12,7 +12,7 @@ protocol PurchaseService: AnyObject {
 
 @MainActor
 final class StoreKitPurchaseService: PurchaseService {
-    static let productID = "full_game_unlock"
+    static let productID = "gridlockdice.lifetime.unlock"
 
     private var product: Product?
 

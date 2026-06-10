@@ -2,6 +2,13 @@ import Foundation
 
 private let maxNodeCount = 500_000
 
+struct SolutionStep: Equatable {
+    let pieceID: String
+    let row: Int
+    let col: Int
+    let shape: Shape
+}
+
 struct PuzzleSolver {
 
     static func isSolvable(level: LevelDef) -> Bool {
@@ -9,6 +16,17 @@ struct PuzzleSolver {
         var board = BoardState(rows: level.rows, cols: level.cols, dice: level.dice)
         var nodes = 0
         return solve(&board, tray, allowsRotation: level.allowsRotation, nodes: &nodes)
+    }
+
+    static func findSolution(level: LevelDef) -> [SolutionStep]? {
+        let tray = level.pieces.map { TrayPiece(from: $0) }
+        var board = BoardState(rows: level.rows, cols: level.cols, dice: level.dice)
+        var steps: [SolutionStep] = []
+        var nodes = 0
+        if solveWithSteps(&board, tray, allowsRotation: level.allowsRotation, nodes: &nodes, steps: &steps) {
+            return steps
+        }
+        return nil
     }
 
     static func countSolutions(level: LevelDef, max: Int) -> Int {
@@ -26,13 +44,52 @@ struct PuzzleSolver {
             nodes += 1
             let orientations = generateOrientations(piece.shape, includeRotations: allowsRotation)
             for shape in orientations {
-                if board.canPlace(shape: shape, at: tr, col: tc) {
-                    var nextBoard = board
-                    nextBoard.place(shape: shape, at: tr, col: tc, pieceID: piece.id, color: piece.color)
-                    var nextPieces = pieces
-                    nextPieces.remove(at: i)
-                    if solve(&nextBoard, nextPieces, allowsRotation: allowsRotation, nodes: &nodes) {
-                        return true
+                for pr in 0..<shape.height {
+                    for pc in 0..<shape.width {
+                        guard shape[pr][pc] else { continue }
+                        let row = tr - pr
+                        let col = tc - pc
+                        if board.canPlace(shape: shape, at: row, col: col) {
+                            var nextBoard = board
+                            nextBoard.place(shape: shape, at: row, col: col, pieceID: piece.id, color: piece.color)
+                            var nextPieces = pieces
+                            nextPieces.remove(at: i)
+                            if solve(&nextBoard, nextPieces, allowsRotation: allowsRotation, nodes: &nodes) {
+                                return true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false
+    }
+
+    private static func solveWithSteps(_ board: inout BoardState, _ pieces: [TrayPiece], allowsRotation: Bool, nodes: inout Int, steps: inout [SolutionStep]) -> Bool {
+        if board.isSolved { return true }
+        if nodes >= maxNodeCount { return false }
+        guard let (tr, tc) = firstEmpty(board) else { return false }
+
+        for (i, piece) in pieces.enumerated() {
+            nodes += 1
+            let orientations = generateOrientations(piece.shape, includeRotations: allowsRotation)
+            for shape in orientations {
+                for pr in 0..<shape.height {
+                    for pc in 0..<shape.width {
+                        guard shape[pr][pc] else { continue }
+                        let row = tr - pr
+                        let col = tc - pc
+                        if board.canPlace(shape: shape, at: row, col: col) {
+                            var nextBoard = board
+                            nextBoard.place(shape: shape, at: row, col: col, pieceID: piece.id, color: piece.color)
+                            var nextPieces = pieces
+                            nextPieces.remove(at: i)
+                            steps.append(SolutionStep(pieceID: piece.id, row: row, col: col, shape: shape))
+                            if solveWithSteps(&nextBoard, nextPieces, allowsRotation: allowsRotation, nodes: &nodes, steps: &steps) {
+                                return true
+                            }
+                            steps.removeLast()
+                        }
                     }
                 }
             }
@@ -48,13 +105,20 @@ struct PuzzleSolver {
         for (i, piece) in pieces.enumerated() {
             let orientations = generateOrientations(piece.shape, includeRotations: allowsRotation)
             for shape in orientations {
-                if board.canPlace(shape: shape, at: tr, col: tc) {
-                    var nextBoard = board
-                    nextBoard.place(shape: shape, at: tr, col: tc, pieceID: piece.id, color: piece.color)
-                    var nextPieces = pieces
-                    nextPieces.remove(at: i)
-                    count += countSolutions(&nextBoard, nextPieces, allowsRotation: allowsRotation, max: max - count)
-                    if count >= max { return count }
+                for pr in 0..<shape.height {
+                    for pc in 0..<shape.width {
+                        guard shape[pr][pc] else { continue }
+                        let row = tr - pr
+                        let col = tc - pc
+                        if board.canPlace(shape: shape, at: row, col: col) {
+                            var nextBoard = board
+                            nextBoard.place(shape: shape, at: row, col: col, pieceID: piece.id, color: piece.color)
+                            var nextPieces = pieces
+                            nextPieces.remove(at: i)
+                            count += countSolutions(&nextBoard, nextPieces, allowsRotation: allowsRotation, max: max - count)
+                            if count >= max { return count }
+                        }
+                    }
                 }
             }
         }
