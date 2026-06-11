@@ -72,15 +72,20 @@ struct GameView: View {
             }
 
             Button {
-                vm.autoSolve()
+                if vm.showingHint {
+                    vm.clearHint()
+                } else {
+                    vm.showHint()
+                }
             } label: {
-                Image(systemName: "wand.and.stars")
+                Image(systemName: vm.hintUsed ? "lightbulb.slash" : (vm.showingHint ? "lightbulb.fill" : "lightbulb"))
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundStyle(Color.accentPurple)
+                    .foregroundStyle(vm.hintUsed ? Color.label4 : (vm.showingHint ? Color.accentYellow : Color.accentPurple))
                     .frame(width: 36, height: 36)
-                    .background(Color.fill3)
+                    .background(vm.hintUsed ? Color.bg2 : (vm.showingHint ? Color.accentYellow.opacity(0.15) : Color.fill3))
                     .clipShape(Circle())
             }
+            .disabled(vm.hintUsed && !vm.showingHint)
 
             Button {
                 vm.reset()

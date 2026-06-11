@@ -9,6 +9,7 @@ struct BoardCellView: View {
 
     private var state: CellState { vm.board[row, col] }
     private var isHovered: Bool { vm.hoverCells.contains("\(row),\(col)") }
+    private var isHinted: Bool { vm.hintCells.contains("\(row),\(col)") }
     private var isShaking: Bool {
         if case .filled(let pid, _) = state { return vm.shakingPieceID == pid }
         return false
@@ -27,6 +28,14 @@ struct BoardCellView: View {
 
         }
         .frame(width: cellSize, height: cellSize)
+        .overlay(
+            isHinted
+                ? RoundedRectangle(cornerRadius: max(8, cellSize * 0.14), style: .continuous)
+                    .stroke(Color.accentYellow.opacity(0.6), lineWidth: 2)
+                    .frame(width: cellSize, height: cellSize)
+                    .opacity(vm.showingHint ? 1 : 0)
+                : nil
+        )
         .accessibilityLabel(cellAccessibilityLabel)
         .onTapGesture {
             if case .filled(let pid, _) = state {
@@ -42,10 +51,11 @@ struct BoardCellView: View {
     private var background: Color {
         switch state {
         case .empty:
+            if isHinted { return Color.accentYellow.opacity(0.18) }
             if isHovered { return vm.hoverIsValid ? Color.accentGreen.opacity(0.14) : Color.accentRed.opacity(0.12) }
             return Color.bg2
         case .dice:
-            return Color.white
+            return Color(hex: "#F7F2EC")
         case .filled(_, let color):
             return color.style.fill
         }
@@ -54,6 +64,7 @@ struct BoardCellView: View {
     private var border: Color {
         switch state {
         case .empty:
+            if isHinted { return Color.accentYellow.opacity(0.8) }
             if isHovered { return vm.hoverIsValid ? Color.accentGreen.opacity(0.75) : Color.accentRed.opacity(0.65) }
             return Color.sep
         case .dice:

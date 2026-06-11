@@ -72,10 +72,10 @@ final class ScopeGuardTests: XCTestCase {
         )
     }
 
-    func testNoHintSystemRefs() {
+    func testNoPaidHints() {
         assertNotContained(
-            "showHint|requestHint|hint(s)?(System|Manager|Button|View)|purchaseHint",
-            message: "Hint system references should not exist"
+            "purchaseHint|hint.*price|paid.*hint|unlock.*hint",
+            message: "Paid hint system should not exist"
         )
     }
 

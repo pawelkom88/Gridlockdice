@@ -35,6 +35,10 @@ final class GameViewModel {
     var boardFrame: CGRect = .zero
     var showOnboarding: Bool = false
 
+    var hintCells: Set<String> = []
+    var showingHint: Bool = false
+    var hintUsed: Bool = false
+
     var shakingPieceID: String?
     var snappingPieceID: String?
     var rotatingPieceID: String?
@@ -112,6 +116,7 @@ final class GameViewModel {
     }
 
     func endDrag() {
+        clearHint()
         // Called on finger-up. Place if valid, shake if not, always clean up.
         defer {
             dragState = nil
@@ -146,6 +151,7 @@ final class GameViewModel {
             board.place(shape: piece.shape, at: row, col: col, pieceID: piece.id, color: piece.color)
             trayPieces.remove(at: idx)
             placedIDs.append(pieceID)
+            Haptics.piecePlaced()
             withAnimation(.spring(response: 0.25, dampingFraction: 0.55)) {
                 snappingPieceID = pieceID
             }
@@ -154,6 +160,7 @@ final class GameViewModel {
                 snappingPieceID = nil
                 if board.isSolved {
                     timerTask?.cancel()
+                    Haptics.levelSolved()
                     onSolved?(elapsedSeconds)
                 }
             }
@@ -181,24 +188,36 @@ final class GameViewModel {
         startTimer()
     }
 
-    func autoSolve() {
-        reset()
+    func showHint() {
+        guard !hintUsed else { return }
+        clearHint()
         guard let steps = PuzzleSolver.findSolution(level: level) else { return }
-        Task {
-            for step in steps {
-                guard let idx = trayPieces.firstIndex(where: { $0.id == step.pieceID }) else { continue }
-                var rotations = 0
-                while trayPieces[idx].shape != step.shape, rotations < 4 {
-                    trayPieces[idx].rotateCW()
-                    rotations += 1
+        guard let solStep = steps.first(where: { s in trayPieces.contains(where: { $0.id == s.pieceID }) }) else { return }
+        highlightSolutionStep(solStep)
+        hintUsed = true
+        Haptics.hintShown()
+    }
+
+    private func highlightSolutionStep(_ step: SolutionStep) {
+        var cells: Set<String> = []
+        for dr in 0..<step.shape.height {
+            for dc in 0..<step.shape.width {
+                if step.shape[dr][dc] {
+                    cells.insert("\(step.row+dr),\(step.col+dc)")
                 }
-                tryPlace(pieceID: step.pieceID, at: step.row, col: step.col)
-                try? await Task.sleep(nanoseconds: 200_000_000)
             }
         }
+        hintCells = cells
+        showingHint = true
+    }
+
+    func clearHint() {
+        hintCells = []
+        showingHint = false
     }
 
     internal func triggerShake(id: String) {
+        Haptics.invalidDrop()
         withAnimation(.default) { shakingPieceID = id }
         Task {
             try? await Task.sleep(nanoseconds: 500_000_000)
@@ -254,6 +273,12 @@ final class AppViewModel {
             screen = .levelSelect
         }
         return success
+    }
+
+    func resetProgress() {
+        completedIDs = []
+        isUnlocked = false
+        hasSeenOnboarding = false
     }
 
     func restore() async throws -> Bool {

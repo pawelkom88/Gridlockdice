@@ -1,27 +1,27 @@
 import SwiftUI
 
 extension Color {
-    static let bg0 = Color(hex: "#000000")
-    static let bg1 = Color(hex: "#1c1c1e")
-    static let bg2 = Color(hex: "#2c2c2e")
-    static let bg3 = Color(hex: "#3a3a3c")
+    static let bg0 = Color(hex: "#171412")
+    static let bg1 = Color(hex: "#211D1A")
+    static let bg2 = Color(hex: "#27221F")
+    static let bg3 = Color(hex: "#302A26")
 
-    static let sep       = Color.white.opacity(0.12)
-    static let sepStrong = Color.white.opacity(0.20)
+    static let sep       = Color(hex: "#3A332F")
+    static let sepStrong = Color(hex: "#4A403A")
 
-    static let label1 = Color.white
-    static let label2 = Color.white
-    static let label3 = Color.white.opacity(0.75)
-    static let label4 = Color.white.opacity(0.38)
+    static let label1 = Color(hex: "#F7F2EC")
+    static let label2 = Color(hex: "#F7F2EC")
+    static let label3 = Color(hex: "#B8AEA6")
+    static let label4 = Color(hex: "#8F837A")
 
-    static let fill2 = Color(red: 0.47, green: 0.47, blue: 0.50).opacity(0.24)
-    static let fill3 = Color(red: 0.46, green: 0.46, blue: 0.50).opacity(0.22)
+    static let fill2 = Color(hex: "#2B2623")
+    static let fill3 = Color(hex: "#211D1A")
 
-    static let accentBlue   = Color(hex: "#0a84ff")
-    static let accentGreen  = Color(hex: "#30d158")
-    static let accentYellow = Color(hex: "#ffd60a")
+    static let accentBlue   = Color(hex: "#7EA7FF")
+    static let accentGreen  = Color(hex: "#7EB66F")
+    static let accentYellow = Color(hex: "#F4A340")
     static let accentOrange = Color(hex: "#ff9f0a")
-    static let accentRed    = Color(hex: "#ff453a")
+    static let accentRed    = Color(hex: "#FF453F")
     static let accentPurple = Color(hex: "#bf5af2")
 
     init(hex: String) {

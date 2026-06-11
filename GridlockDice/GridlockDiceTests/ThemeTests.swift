@@ -48,11 +48,11 @@ final class ThemeTests: XCTestCase {
 
     func testHexColorInitializerAcceptsReferenceHexValues() {
         let colors: [Color] = [
-            Color(hex: "#0a84ff"),
-            Color(hex: "#30d158"),
-            Color(hex: "#ffd60a"),
+            Color(hex: "#7EA7FF"),
+            Color(hex: "#7EB66F"),
+            Color(hex: "#F4A340"),
             Color(hex: "#ff9f0a"),
-            Color(hex: "#ff453a"),
+            Color(hex: "#FF453F"),
             Color(hex: "#bf5af2"),
             Color(hex: "#ff375f"),
             Color(hex: "#5ac8fa"),

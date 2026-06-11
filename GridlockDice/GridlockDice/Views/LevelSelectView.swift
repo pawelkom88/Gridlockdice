@@ -3,6 +3,7 @@ import SwiftUI
 struct LevelSelectView: View {
 
     @Environment(AppViewModel.self) private var appVM
+    @State private var showResetConfirmation = false
 
     private let sections: [(label: String, sub: String, range: ClosedRange<Int>)] = [
         ("Tutorial",    "Free · No rotation",   1...5),
@@ -31,9 +32,39 @@ struct LevelSelectView: View {
                     ForEach(sections, id: \.label) { sec in
                         sectionView(sec)
                     }
+
+                    Spacer(minLength: 60)
+
+                    HStack {
+                        Spacer()
+                        Button {
+                            showResetConfirmation = true
+                        } label: {
+                            Text("Reset Progress")
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundStyle(Color.label4)
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 8)
+                                .background(Color.bg2)
+                                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                        .strokeBorder(Color.sep, lineWidth: 0.5)
+                                )
+                        }
+                        Spacer()
+                    }
                 }
                 .padding(.horizontal, Spacing.xl)
                 .padding(.bottom, 40)
+            }
+            .alert("Reset All Progress?", isPresented: $showResetConfirmation) {
+                Button("Cancel", role: .cancel) {}
+                Button("Reset", role: .destructive) {
+                    appVM.resetProgress()
+                }
+            } message: {
+                Text("This will clear all completed levels and purchases. This cannot be undone.")
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)

@@ -293,6 +293,16 @@ struct OnboardingOverlayView: View {
                         .font(.system(size: 13))
                         .foregroundStyle(Color.label3)
                 }
+
+                HStack(alignment: .top, spacing: 10) {
+                    Image(systemName: "lightbulb")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundStyle(Color.accentYellow)
+                        .frame(width: 20)
+                    Text("Stuck? Tap the lightbulb for a hint. One hint available per level.")
+                        .font(.system(size: 13))
+                        .foregroundStyle(Color.label3)
+                }
             }
             .padding(.horizontal, 28)
         }
