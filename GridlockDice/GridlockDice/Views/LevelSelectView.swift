@@ -5,6 +5,8 @@ struct LevelSelectView: View {
     @Environment(AppViewModel.self) private var appVM
     @State private var showResetConfirmation = false
 
+    private var isPad: Bool { UIDevice.current.userInterfaceIdiom == .pad }
+
     private let sections: [(label: String, sub: String, range: ClosedRange<Int>)] = [
         ("Tutorial",    "Free · No rotation",   1...5),
         ("Beginner",    "Free · No rotation",   6...15),
@@ -14,13 +16,13 @@ struct LevelSelectView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            VStack(alignment: .leading, spacing: 5) {
+            VStack(alignment: .leading, spacing: isPad ? 10 : 5) {
                 Text("Block Game")
-                    .font(AppFont.title())
+                    .font(.system(size: isPad ? 60 : 30, weight: .bold))
                     .foregroundStyle(Color.label1)
                     .tracking(-0.5)
                 Text("50 hand-crafted levels")
-                    .font(AppFont.body())
+                    .font(.system(size: isPad ? 28 : 14))
                     .foregroundStyle(Color.label3)
             }
             .padding(.horizontal, Spacing.xl)
@@ -28,7 +30,7 @@ struct LevelSelectView: View {
             .padding(.bottom, Spacing.lg)
 
             ScrollView(.vertical, showsIndicators: false) {
-                VStack(alignment: .leading, spacing: Spacing.xxl) {
+                VStack(alignment: .leading, spacing: isPad ? 56 : 28) {
                     ForEach(sections, id: \.label) { sec in
                         sectionView(sec)
                     }
@@ -41,14 +43,14 @@ struct LevelSelectView: View {
                             showResetConfirmation = true
                         } label: {
                             Text("Reset Progress")
-                                .font(.system(size: 12, weight: .medium))
+                                .font(.system(size: isPad ? 24 : 12, weight: .medium))
                                 .foregroundStyle(Color.label4)
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 8)
+                                .padding(.horizontal, isPad ? 32 : 16)
+                                .padding(.vertical, isPad ? 16 : 8)
                                 .background(Color.bg2)
-                                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                                .clipShape(RoundedRectangle(cornerRadius: isPad ? 16 : 8, style: .continuous))
                                 .overlay(
-                                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
                                         .strokeBorder(Color.sep, lineWidth: 0.5)
                                 )
                         }
@@ -74,26 +76,26 @@ struct LevelSelectView: View {
     @ViewBuilder
     private func sectionView(_ sec: (label: String, sub: String, range: ClosedRange<Int>)) -> some View {
         let allPaid = sec.range.lowerBound >= 16
-        VStack(alignment: .leading, spacing: Spacing.md) {
+        VStack(alignment: .leading, spacing: isPad ? 24 : 12) {
             HStack(alignment: .lastTextBaseline) {
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading, spacing: isPad ? 4 : 2) {
                     Text(sec.label)
-                        .font(AppFont.subheadline())
+                        .font(.system(size: isPad ? 30 : 15, weight: .semibold))
                         .foregroundStyle(Color.label1)
                     Text(sec.sub)
-                        .font(.system(size: 12))
+                        .font(.system(size: isPad ? 24 : 12))
                         .foregroundStyle(Color.label3)
                 }
                 Spacer()
                 if allPaid && !appVM.isUnlocked {
                     Button("Unlock") { appVM.screen = .paywall }
-                        .font(.system(size: 13, weight: .semibold))
+                        .font(.system(size: isPad ? 26 : 13, weight: .semibold))
                         .foregroundStyle(Color.accentBlue)
                 }
             }
 
-            let cols = Array(repeating: GridItem(.flexible(), spacing: 8), count: 5)
-            LazyVGrid(columns: cols, spacing: 8) {
+            let cols = Array(repeating: GridItem(.flexible(), spacing: isPad ? 16 : 8), count: 5)
+            LazyVGrid(columns: cols, spacing: isPad ? 16 : 8) {
                 ForEach(sec.range, id: \.self) { lvl in
                     let def = LevelCatalogue.all.first(where: { $0.id == lvl })
                     let isLocked = (def?.isFree == false) && !appVM.isUnlocked
@@ -131,30 +133,32 @@ private struct LevelCell: View {
     let isLocked: Bool
     let hasLevel: Bool
 
+    private var isPad: Bool { UIDevice.current.userInterfaceIdiom == .pad }
+
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 13, style: .continuous)
+            RoundedRectangle(cornerRadius: isPad ? 26 : 13, style: .continuous)
                 .fill(background)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 13, style: .continuous)
-                        .strokeBorder(border, lineWidth: isNext ? 1 : 0.5)
+                    RoundedRectangle(cornerRadius: isPad ? 26 : 13, style: .continuous)
+                        .strokeBorder(border, lineWidth: isNext ? (isPad ? 2 : 1) : (isPad ? 1 : 0.5))
                 )
-                .shadow(color: isNext ? Color.accentBlue.opacity(0.15) : .clear, radius: 8)
+                .shadow(color: isNext ? Color.accentBlue.opacity(0.15) : .clear, radius: isPad ? 16 : 8)
 
             if isLocked {
                 Image(systemName: "lock.fill")
-                    .font(.system(size: 14, weight: .medium))
+                    .font(.system(size: isPad ? 28 : 14, weight: .medium))
                     .foregroundStyle(Color.label4)
             } else {
-                VStack(spacing: 2) {
+                VStack(spacing: isPad ? 4 : 2) {
                     Text("\(number)")
-                        .font(.system(size: 16, weight: .bold))
+                        .font(.system(size: isPad ? 32 : 16, weight: .bold))
                         .foregroundStyle(labelColor)
                     if isDone {
-                        HStack(spacing: 1) {
+                        HStack(spacing: isPad ? 2 : 1) {
                             ForEach(0..<3, id: \.self) { _ in
                                 Image(systemName: "star.fill")
-                                    .font(.system(size: 7))
+                                    .font(.system(size: isPad ? 14 : 7))
                                     .foregroundStyle(Color.accentYellow)
                             }
                         }
@@ -162,17 +166,17 @@ private struct LevelCell: View {
                 }
                 if isDone {
                     Image(systemName: "checkmark")
-                        .font(.system(size: 9, weight: .bold))
+                        .font(.system(size: isPad ? 18 : 9, weight: .bold))
                         .foregroundStyle(Color.accentGreen)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                        .padding(5)
+                        .padding(isPad ? 10 : 5)
                 }
                 if isNext {
                     Circle()
                         .fill(Color.accentBlue)
-                        .frame(width: 6, height: 6)
+                        .frame(width: isPad ? 12 : 6, height: isPad ? 12 : 6)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                        .padding(6)
+                        .padding(isPad ? 12 : 6)
                 }
             }
         }

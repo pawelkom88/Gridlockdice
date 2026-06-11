@@ -24,24 +24,31 @@ struct PaywallView: View {
                         Spacer()
                     }
                     .padding(.horizontal, Spacing.xl)
-                    .padding(.top, Spacing.xl)
+                    .padding(.top, 60)
                     .padding(.bottom, Spacing.lg)
 
-                    Text("Unlock the full game")
-                        .font(.system(size: 26, weight: .bold))
-                        .foregroundStyle(Color.label1)
-                        .tracking(-0.5)
-                        .multilineTextAlignment(.center)
-                        .padding(.bottom, 8)
+                    VStack(spacing: 4) {
+                        Text("Unlock the full game")
+                            .font(.system(size: 26, weight: .bold))
+                            .foregroundStyle(Color.label1)
+                            .tracking(-0.5)
+                            .multilineTextAlignment(.center)
+
+                        Text("one-time payment")
+                            .font(.system(size: 13))
+                            .foregroundStyle(Color.label3)
+                            .tracking(0.3)
+                    }
+                    .padding(.bottom, 8)
 
                     Text("35 more levels. No subscriptions.\nNo ads. Ever.")
                         .font(AppFont.body())
                         .foregroundStyle(Color.label3)
                         .multilineTextAlignment(.center)
                         .lineSpacing(4)
-                        .padding(.bottom, 28)
+                        .padding(.bottom, 20)
 
-                    VStack(spacing: 0) {
+                    VStack(alignment: .leading, spacing: 0) {
                         ForEach(features.indices, id: \.self) { i in
                             let f = features[i]
                             featureRow(icon: f.icon, color: f.color, title: f.title, detail: f.detail)
@@ -53,7 +60,7 @@ struct PaywallView: View {
                         }
                     }
                     .padding(.horizontal, Spacing.xl)
-                    .padding(.bottom, 24)
+                    .padding(.bottom, 4)
                 }
             }
 
@@ -91,6 +98,7 @@ struct PaywallView: View {
             }
             .padding(.top, 1)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 14)
     }
 
@@ -99,17 +107,10 @@ struct PaywallView: View {
             Divider().background(Color.sep)
 
             VStack(spacing: 14) {
-                HStack(alignment: .bottom, spacing: 8) {
-                    Text(appVM.priceText)
-                        .font(.system(size: 38, weight: .bold))
-                        .foregroundStyle(Color.label1)
-                        .tracking(-0.6)
-                    Text("one-time\npayment")
-                        .font(.system(size: 12))
-                        .foregroundStyle(Color.label3)
-                        .lineSpacing(2)
-                        .padding(.bottom, 4)
-                }
+                Text(appVM.priceText)
+                    .font(.system(size: 38, weight: .bold))
+                    .foregroundStyle(Color.label1)
+                    .tracking(-0.6)
 
                 Button {
                     isPurchasing = true
@@ -138,8 +139,8 @@ struct PaywallView: View {
                 .disabled(isPurchasing || isRestoring)
             }
             .padding(.horizontal, Spacing.xl)
-            .padding(.top, 14)
-            .padding(.bottom, 32)
+            .padding(.top, 4)
+            .padding(.bottom, 24)
             .background(Color.bg0)
         }
     }

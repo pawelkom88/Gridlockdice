@@ -65,4 +65,11 @@ final class CellSizingTests: XCTestCase {
         XCTAssertGreaterThan(size, 0)
         XCTAssertLessThanOrEqual(size, calc.maxCellSize)
     }
+
+    func testCellSizeRespectsCustomMax() {
+        let size = calc.compute(rows: 6, cols: 6, availableSize: CGSize(width: 900, height: 600), maxCellSize: 120)
+        XCTAssertGreaterThan(size, 0)
+        XCTAssertLessThanOrEqual(size, 120)
+        XCTAssertGreaterThan(size, calc.maxCellSize, "Custom max should allow larger cells than default")
+    }
 }

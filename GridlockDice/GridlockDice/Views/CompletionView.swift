@@ -5,23 +5,28 @@ struct CompletionView: View {
     let levelID: Int
     let elapsed: TimeInterval
 
+    private var isPad: Bool { UIDevice.current.userInterfaceIdiom == .pad }
+
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: isPad ? 40 : 20) {
             Text("Solved")
-                .font(AppFont.large())
+                .font(.system(size: isPad ? 72 : 36, weight: .bold))
                 .foregroundStyle(Color.label1)
 
             Text("Level \(levelID)")
-                .font(AppFont.headline())
+                .font(.system(size: isPad ? 36 : 18, weight: .bold))
                 .foregroundStyle(Color.label3)
 
-            HStack(spacing: 12) {
+            HStack(spacing: isPad ? 24 : 12) {
                 Button("All Levels") {
                     appVM.screen = .levelSelect
                 }
+                .font(.system(size: isPad ? 34 : 17, weight: .bold))
+
                 Button("Next Level") {
                     appVM.goToNextLevel(after: levelID)
                 }
+                .font(.system(size: isPad ? 34 : 17, weight: .bold))
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

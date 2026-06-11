@@ -5,8 +5,14 @@ struct TrayPieceView: View {
     @Environment(GameViewModel.self) private var vm
     let piece: TrayPiece
     let cellSize: CGFloat
+    let thumbnailSize: CGFloat
 
-    private let thumbnailSize: CGFloat = 20
+    init(piece: TrayPiece, cellSize: CGFloat, thumbnailSize: CGFloat = 20) {
+        self.piece = piece
+        self.cellSize = cellSize
+        self.thumbnailSize = thumbnailSize
+    }
+
     private let GAP: CGFloat = 3
 
     private var isRotating: Bool { vm.rotatingPieceID == piece.id }

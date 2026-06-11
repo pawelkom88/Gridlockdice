@@ -47,8 +47,11 @@ final class ResponsiveLayoutTests: XCTestCase {
 
     func testTrayRemainsAccessibleInCompactLayout() {
         let trayHeight: CGFloat = 122
+        let ipadTrayHeight: CGFloat = 150
         XCTAssertGreaterThan(trayHeight, 100, "Tray height should accommodate pieces + scroll")
         XCTAssertLessThan(trayHeight, 200, "Tray should not dominate the screen")
+        XCTAssertGreaterThan(ipadTrayHeight, trayHeight, "iPad tray should be larger")
+        XCTAssertLessThan(ipadTrayHeight, 200, "iPad tray should not dominate the screen")
     }
 
     // MARK: - Board for different catalogue sizes
