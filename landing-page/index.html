@@ -1,0 +1,2202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GridlockDice — Premium Block Puzzle for iPhone & iPad. No Ads, No Subscription</title>
+  <meta name="description"
+    content="GridlockDice is a premium block puzzle for iPhone & iPad. 50 hand-crafted levels with dice obstacles. Free to try. One-time purchase — no ads, no subscription, no data collection.">
+  <meta name="theme-color" content="#080808">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://gridlockdice.pages.dev">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="icon.webp" type="image/webp">
+  <link rel="apple-touch-icon" href="icon.webp">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GridlockDice">
+  <meta property="og:title" content="GridlockDice — Premium Block Puzzle for iPhone & iPad. No Ads, No Subscription">
+  <meta property="og:description"
+    content="GridlockDice is a premium block puzzle for iPhone & iPad. 50 hand-crafted levels with dice obstacles. Free to try. One-time purchase — no ads, no subscription, no data collection.">
+  <meta property="og:url" content="https://gridlockdice.pages.dev">
+  <meta property="og:image" content="https://gridlockdice.pages.dev/OG-image.webp">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <!-- Twitter/X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="GridlockDice — Premium Block Puzzle for iPhone & iPad. No Ads, No Subscription">
+  <meta name="twitter:description"
+    content="GridlockDice is a premium block puzzle for iPhone & iPad. 50 hand-crafted levels with dice obstacles. Free to try. One-time purchase — no ads, no subscription, no data collection.">
+  <meta name="twitter:image" content="https://gridlockdice.pages.dev/OG-image.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"
+    media="print" onload="this.media='all'">
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet">
+  </noscript>
+  <style>
+    /* ══════════════════════════════════════════
+   DESIGN TOKENS
+══════════════════════════════════════════ */
+    :root {
+      --red: #FF3A2D;
+      --orange: #FF8C00;
+      --yellow: #FFD60A;
+      --green: #30D158;
+      --blue: #0A84FF;
+      --teal: #5AC8FA;
+      --purple: #BF5AF2;
+      --pink: #FF375F;
+
+      --bg0: #080808;
+      --bg1: #0d0d0d;
+      --bg2: #151515;
+      --bg3: #1d1d1d;
+      --bg4: #262626;
+
+      --ink: #ffffff;
+      --ink2: #9a9a9a;
+      --ink3: #4c4c4c;
+
+      /* Piece cell size for hero — responsive via clamp */
+      --fp: clamp(36px, 3.2vw, 54px);
+
+      --max: 1080px;
+      --sv: clamp(80px, 10vw, 124px);
+    }
+
+    /* ══════════════════════════════════════════
+   RESET + BASE
+══════════════════════════════════════════ */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      background: var(--bg0);
+      color: var(--ink);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ══════════════════════════════════════════
+   SKIP LINK
+══════════════════════════════════════════ */
+    .skip-link {
+      position: absolute;
+      top: -200%;
+      left: 1rem;
+      background: var(--bg3);
+      color: var(--ink);
+      padding: .75rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 600;
+      z-index: 9999;
+      transition: top .2s;
+    }
+
+    .skip-link:focus {
+      top: 1rem;
+    }
+
+    /* ══════════════════════════════════════════
+   LAYOUT UTILITIES
+══════════════════════════════════════════ */
+    .w {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 clamp(1.25rem, 5vw, 2.5rem);
+    }
+
+    .section {
+      padding: var(--sv) 0;
+    }
+
+    /* ══════════════════════════════════════════
+   TYPOGRAPHY
+══════════════════════════════════════════ */
+    .t-eye {
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .t-display {
+      font-size: clamp(3rem, 7.5vw, 7rem);
+      font-weight: 900;
+      line-height: .93;
+      letter-spacing: -.04em;
+    }
+
+    .t-h2 {
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 800;
+      line-height: 1.06;
+      letter-spacing: -.03em;
+    }
+
+    .t-body {
+      font-size: clamp(.95rem, 1.7vw, 1.1rem);
+      line-height: 1.72;
+    }
+
+    /* ══════════════════════════════════════════
+   RAINBOW STRIPE
+══════════════════════════════════════════ */
+    .rb {
+      height: 3px;
+      background: linear-gradient(90deg,
+          var(--red) 0%, var(--orange) 14%, var(--yellow) 28%,
+          var(--green) 42%, var(--blue) 56%, var(--teal) 70%,
+          var(--purple) 84%, var(--pink) 100%);
+    }
+
+    /* ══════════════════════════════════════════
+   NAV
+══════════════════════════════════════════ */
+    #nav {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 300;
+      padding: 1rem 0;
+      border-bottom: 1px solid transparent;
+      transition: background .4s, border-color .4s, backdrop-filter .4s;
+    }
+
+    #nav.scrolled {
+      background: rgba(8, 8, 8, .9);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border-color: rgba(255, 255, 255, .07);
+    }
+
+    .nav-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: .625rem;
+      font-weight: 800;
+      font-size: 1.0625rem;
+      letter-spacing: -.02em;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      background: var(--ink);
+      color: var(--bg0);
+      padding: .5rem 1.25rem;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: .875rem;
+      transition: opacity .18s, transform .18s;
+    }
+
+    .nav-cta:hover {
+      opacity: .88;
+      transform: translateY(-1px);
+    }
+
+    /* ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 110px 0 64px;
+      gap: 0;
+    }
+
+    /* Faint game-grid background */
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, .024) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .024) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 110% 100% at 50% 50%, black 5%, transparent 72%);
+      -webkit-mask-image: radial-gradient(ellipse 110% 100% at 50% 50%, black 5%, transparent 72%);
+    }
+
+    /* Centre ambient glow */
+    .hero-glow {
+      position: absolute;
+      pointer-events: none;
+      width: 640px;
+      height: 640px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(10, 132, 255, .055) 0%, transparent 68%);
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* ══ Floating piece system ══ */
+    .fp-stage {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .fp-pos {
+      position: absolute;
+    }
+
+    /* fp-tilt: transform set inline per piece */
+    .fp-bob {
+      will-change: transform;
+      animation: bob 4s ease-in-out infinite;
+    }
+
+    @keyframes bob {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-16px);
+      }
+    }
+
+    .fp-grid {
+      display: grid;
+      gap: 5px;
+      grid-template-columns: repeat(var(--gc), var(--fp));
+      grid-template-rows: repeat(var(--gr), var(--fp));
+    }
+
+    /* Piece cell — plastic toy aesthetic with gloss sheen */
+    .fp-c {
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+      box-shadow:
+        0 10px 28px rgba(0, 0, 0, .55),
+        0 3px 7px rgba(0, 0, 0, .3),
+        inset 0 1px 0 rgba(255, 255, 255, .26),
+        inset 0 -1px 0 rgba(0, 0, 0, .22);
+    }
+
+    .fp-c::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(148deg,
+          rgba(255, 255, 255, .24) 0%,
+          rgba(255, 255, 255, .05) 38%,
+          transparent 65%);
+      pointer-events: none;
+    }
+
+    .fp-e {
+      visibility: hidden;
+    }
+
+    /* piece colour classes */
+    .cr {
+      background: var(--red);
+    }
+
+    .co {
+      background: var(--orange);
+    }
+
+    .cy {
+      background: var(--yellow);
+    }
+
+    .cg {
+      background: var(--green);
+    }
+
+    .cb {
+      background: var(--blue);
+    }
+
+    .ct {
+      background: var(--teal);
+    }
+
+    .cp {
+      background: var(--purple);
+    }
+
+    .cpk {
+      background: var(--pink);
+    }
+
+    /* ══ Hero text block ══ */
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      max-width: 800px;
+      padding: 0 1.5rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .1);
+      padding: .4rem 1rem;
+      border-radius: 100px;
+      font-size: .8125rem;
+      font-weight: 500;
+      color: var(--ink2);
+      margin-bottom: 2rem;
+      animation: fadeUp .7s .1s cubic-bezier(.16, 1, .3, 1) backwards;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: blink 2.4s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .3
+      }
+    }
+
+    /* The headline: two lines, first white, second full-spectrum gradient */
+    .hero-hl {
+      margin-bottom: 1.5rem;
+      animation: fadeUp .82s .22s cubic-bezier(.16, 1, .3, 1) backwards;
+    }
+
+    .hero-hl span {
+      display: block;
+    }
+
+    .hl-plain {
+      color: var(--ink);
+    }
+
+    .hl-grad {
+      background: linear-gradient(110deg,
+          var(--orange) 0%,
+          var(--yellow) 22%,
+          var(--green) 44%,
+          var(--teal) 63%,
+          var(--purple) 83%,
+          var(--pink) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-sub {
+      color: var(--ink2);
+      font-size: clamp(.95rem, 1.8vw, 1.1rem);
+      line-height: 1.72;
+      max-width: 440px;
+      margin: 0 auto 2.5rem;
+      animation: fadeUp .82s .38s cubic-bezier(.16, 1, .3, 1) backwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: .75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp .82s .52s cubic-bezier(.16, 1, .3, 1) backwards;
+    }
+
+    /* ══ Stats strip ══ */
+    .hero-stats {
+      position: relative;
+      z-index: 10;
+      margin-top: 3rem;
+      width: 100%;
+      animation: fadeUp .82s .68s cubic-bezier(.16, 1, .3, 1) backwards;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 14px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, .024);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .stat {
+      padding: 1.25rem 1rem;
+      text-align: center;
+      border-right: 1px solid rgba(255, 255, 255, .07);
+    }
+
+    .stat:last-child {
+      border-right: none;
+    }
+
+    .stat-n {
+      font-size: 1.875rem;
+      font-weight: 900;
+      letter-spacing: -.04em;
+      line-height: 1;
+      margin-bottom: .3rem;
+    }
+
+    .stat-l {
+      font-size: .6875rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ink2);
+    }
+
+    /* Floating pieces entrance */
+    .fp-stage {
+      animation: fadeUp 1.2s .3s cubic-bezier(.16, 1, .3, 1) backwards;
+    }
+
+    /* ══════════════════════════════════════════
+   BUTTONS
+══════════════════════════════════════════ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .875rem 1.875rem;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: .9375rem;
+      transition: transform .18s, opacity .18s;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-white {
+      background: var(--ink);
+      color: var(--bg0);
+    }
+
+    .btn-white:hover {
+      opacity: .9;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid rgba(255, 255, 255, .22);
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(255, 255, 255, .5);
+      background: rgba(255, 255, 255, .05);
+    }
+
+    /* ══════════════════════════════════════════
+   SECTION HEADER
+══════════════════════════════════════════ */
+    .sh {
+      margin-bottom: 3rem;
+    }
+
+    .sh.c {
+      text-align: center;
+    }
+
+    .sh.c .sh-sub {
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .sh-tag {
+      margin-bottom: .875rem;
+    }
+
+    .sh-h {
+      margin-bottom: .875rem;
+    }
+
+    .sh-sub {
+      color: var(--ink2);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    /* Divider line */
+    .divider {
+      height: 1px;
+      background: rgba(255, 255, 255, .06);
+    }
+
+    /* ══════════════════════════════════════════
+   CONCEPT SECTION
+══════════════════════════════════════════ */
+    .s-concept {
+      background: var(--bg1);
+      border-top: 1px solid rgba(255, 255, 255, .05);
+      border-bottom: 1px solid rgba(255, 255, 255, .05);
+    }
+
+    .concept-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: center;
+    }
+
+    .concept-body {
+      color: var(--ink2);
+      max-width: 420px;
+    }
+
+    .concept-body+.concept-body {
+      margin-top: 1.25rem;
+    }
+
+    /* Mini game board */
+    .mini-board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 6px;
+      padding: 1.375rem;
+      background: var(--bg2);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, .07);
+      box-shadow: 0 28px 72px rgba(0, 0, 0, .5), 0 8px 24px rgba(0, 0, 0, .3);
+      max-width: 288px;
+      margin-left: auto;
+      aspect-ratio: 1;
+    }
+
+    .mc {
+      border-radius: 9px;
+      aspect-ratio: 1;
+      position: relative;
+    }
+
+    .mc-e {
+      background: var(--bg4);
+    }
+
+    /* Board piece colours */
+    .mc-r {
+      background: var(--red);
+    }
+
+    .mc-g {
+      background: var(--green);
+    }
+
+    .mc-t {
+      background: var(--teal);
+    }
+
+    .mc-p {
+      background: var(--purple);
+    }
+
+    .mc-r::after,
+    .mc-g::after,
+    .mc-t::after,
+    .mc-p::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(255, 255, 255, .18) 0%, transparent 55%);
+    }
+
+    /* White dice cell */
+    .mc-d {
+      background: #f0e6c0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(.48rem, 1vw, .7rem);
+      font-weight: 800;
+      color: #4a3a18;
+      letter-spacing: -.01em;
+      border-radius: 9px;
+    }
+
+    /* ══════════════════════════════════════════
+   HOW IT WORKS
+══════════════════════════════════════════ */
+    .s-how {
+      background: var(--bg0);
+    }
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--bg4);
+    }
+
+    .how-card {
+      background: var(--bg2);
+      padding: 2.5rem 2rem;
+    }
+
+    .how-num {
+      font-size: 5rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -.06em;
+      opacity: .06;
+      margin-bottom: 1.5rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .how-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .how-icon svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .how-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      margin-bottom: .625rem;
+      letter-spacing: -.01em;
+    }
+
+    .how-desc {
+      color: var(--ink2);
+      font-size: .9375rem;
+      line-height: 1.65;
+    }
+
+    /* ══════════════════════════════════════════
+   FEATURES GRID
+══════════════════════════════════════════ */
+    .s-feat {
+      background: var(--bg1);
+      border-top: 1px solid rgba(255, 255, 255, .05);
+    }
+
+    .feat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--bg4);
+    }
+
+    .feat-card {
+      background: var(--bg2);
+      padding: 2rem 1.75rem;
+      transition: background .2s;
+    }
+
+    .feat-card:hover {
+      background: var(--bg3);
+    }
+
+    .feat-bar {
+      height: 3px;
+      width: 36px;
+      border-radius: 2px;
+      margin-bottom: 1.25rem;
+    }
+
+    .feat-title {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      margin-bottom: .5rem;
+      letter-spacing: -.01em;
+    }
+
+    .feat-desc {
+      color: var(--ink2);
+      font-size: .875rem;
+      line-height: 1.65;
+    }
+
+    /* ══════════════════════════════════════════
+   LEVELS
+══════════════════════════════════════════ */
+    .s-levels {
+      background: var(--bg0);
+    }
+
+    .lev-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--bg4);
+    }
+
+    .lev-card {
+      background: var(--bg2);
+      padding: 2rem 1.5rem;
+    }
+
+    .lev-dots {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+
+    .lev-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--bg4);
+    }
+
+    .lev-dot.on {
+      background: currentColor;
+    }
+
+    .lev-label {
+      font-size: .6875rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: .5rem;
+    }
+
+    .lev-range {
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: -.04em;
+      line-height: 1;
+      margin-bottom: .5rem;
+    }
+
+    .lev-desc {
+      font-size: .8125rem;
+      color: var(--ink2);
+      line-height: 1.55;
+    }
+
+    .lev-free {
+      display: inline-block;
+      margin-top: .75rem;
+      background: rgba(48, 209, 88, .12);
+      color: var(--green);
+      font-size: .6875rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .25rem .625rem;
+      border-radius: 100px;
+    }
+
+    /* ══════════════════════════════════════════
+   PROMISE SECTION
+══════════════════════════════════════════ */
+    .s-promise {
+      background: var(--bg1);
+      border-top: 1px solid rgba(255, 255, 255, .05);
+      border-bottom: 1px solid rgba(255, 255, 255, .05);
+    }
+
+    .promise-layout {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: start;
+    }
+
+    .promise-sticky {
+      position: sticky;
+      top: 7rem;
+    }
+
+    .promise-lead {
+      color: var(--ink2);
+      font-size: 1rem;
+      line-height: 1.72;
+      margin-top: 1rem;
+    }
+
+    .promise-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--bg4);
+      list-style: none;
+      padding: 0;
+    }
+
+    .pi {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: var(--bg2);
+      padding: 1.625rem 1.75rem;
+      transition: background .22s;
+    }
+
+    .pi:hover {
+      background: var(--bg3);
+    }
+
+    .pi-ico {
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pi-ico svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .pi-txt h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: .3rem;
+      letter-spacing: -.01em;
+    }
+
+    .pi-txt p {
+      color: var(--ink2);
+      font-size: .875rem;
+      line-height: 1.62;
+    }
+
+    /* ══════════════════════════════════════════
+   CTA SECTION
+══════════════════════════════════════════ */
+    .s-cta {
+      background: var(--bg0);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-glow {
+      position: absolute;
+      pointer-events: none;
+      width: 900px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(191, 90, 242, .055) 0%, transparent 70%);
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .cta-inner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .cta-hl {
+      font-size: clamp(2.75rem, 7vw, 5.75rem);
+      font-weight: 900;
+      line-height: .93;
+      letter-spacing: -.04em;
+      margin-bottom: 1.25rem;
+    }
+
+    .cta-hl .grad-cta {
+      background: linear-gradient(100deg, var(--orange), var(--pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .cta-sub {
+      color: var(--ink2);
+      font-size: 1.05rem;
+      line-height: 1.65;
+      max-width: 400px;
+      margin: 0 auto 2.25rem;
+    }
+
+    .price-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .75rem;
+      background: var(--bg3);
+      border: 1px solid rgba(255, 255, 255, .09);
+      padding: .75rem 1.5rem;
+      border-radius: 100px;
+      margin-bottom: 2rem;
+      font-size: .9375rem;
+    }
+
+    .price-amt {
+      font-weight: 800;
+      letter-spacing: -.02em;
+      font-size: 1.125rem;
+    }
+
+    .price-note {
+      color: var(--ink2);
+      font-size: .8125rem;
+    }
+
+    .cta-actions {
+      display: flex;
+      gap: .75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-fine {
+      margin-top: 1.5rem;
+      font-size: .8125rem;
+      color: var(--ink3);
+    }
+
+    /* App Store badge */
+    .as-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .875rem;
+      background: var(--ink);
+      color: var(--bg0);
+      padding: .875rem 1.75rem;
+      border-radius: 14px;
+      font-weight: 700;
+      transition: opacity .18s, transform .18s;
+    }
+
+    .as-badge:hover {
+      opacity: .9;
+      transform: translateY(-2px);
+    }
+
+    .as-icon {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+    }
+
+    .as-txt {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .as-top {
+      font-size: .6875rem;
+      font-weight: 500;
+      opacity: .5;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+
+    .as-bot {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -.01em;
+      line-height: 1.2;
+    }
+
+    /* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+    .footer {
+      background: var(--bg0);
+      border-top: 1px solid rgba(255, 255, 255, .06);
+      padding: 2rem 0;
+    }
+
+    .foot-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .foot-brand {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-weight: 800;
+      font-size: .9375rem;
+      letter-spacing: -.01em;
+    }
+
+    .foot-brand-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 5px;
+      flex-shrink: 0;
+    }
+
+    .foot-nav {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      padding: 0;
+    }
+
+    .foot-nav a {
+      font-size: .8125rem;
+      color: var(--ink3);
+      transition: color .2s;
+    }
+
+    .foot-nav a:hover {
+      color: var(--ink2);
+    }
+
+    .foot-copy {
+      font-size: .8125rem;
+      color: var(--ink3);
+    }
+
+    /* ══════════════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════════════ */
+    .sr {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .65s cubic-bezier(.16, 1, .3, 1),
+        transform .65s cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .sr.in {
+      opacity: 1;
+      transform: none;
+    }
+
+    .d1 {
+      transition-delay: .08s;
+    }
+
+    .d2 {
+      transition-delay: .16s;
+    }
+
+    .d3 {
+      transition-delay: .24s;
+    }
+
+    .d4 {
+      transition-delay: .32s;
+    }
+
+    /* Hero elements entrance */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* ══════════════════════════════════════════
+   REDUCED MOTION
+══════════════════════════════════════════ */
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      .sr {
+        opacity: 1;
+        transform: none;
+      }
+
+      .fp-stage {
+        display: none;
+      }
+    }
+
+    /* ══════════════════════════════════════════
+   RESPONSIVE — 900px
+══════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .concept-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .concept-vis {
+        order: -1;
+      }
+
+      .mini-board {
+        max-width: 240px;
+        margin: 0 auto;
+      }
+
+      .how-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feat-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .lev-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .promise-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .promise-sticky {
+        position: static;
+      }
+    }
+
+    /* ══════════════════════════════════════════
+   RESPONSIVE — 600px
+══════════════════════════════════════════ */
+    @media (max-width: 600px) {
+      .feat-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .lev-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .fp-stage {
+        display: none;
+      }
+
+      /* Stats: 2×2 grid on mobile */
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stat:nth-child(2) {
+        border-right: none;
+      }
+
+      .stat:nth-child(1),
+      .stat:nth-child(2) {
+        border-bottom: 1px solid rgba(255, 255, 255, .07);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- Rainbow top stripe -->
+  <div class="rb" aria-hidden="true"></div>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     NAV
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <header id="nav" role="banner">
+    <div class="w nav-row">
+      <a href="/" class="brand" aria-label="GridlockDice home">
+        <img src="icon.webp" alt="" width="32" height="32" class="brand-icon" aria-hidden="true">
+        GridlockDice
+      </a>
+      <a href="#download" class="nav-cta">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink:0">
+          <path
+            d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.2 3.73 7.77 9.7 7.5c1.2.05 2.03.66 2.73.66.69 0 1.78-.81 3.12-.69.52.02 1.98.21 2.92 1.56-2.89 1.7-2.42 5.46.49 6.7-.58 1.48-1.32 2.95-2.91 4.55zM12.03 7.25c-.2-2.63 2.03-4.72 4.36-4.75.28 2.2-2.12 4.41-4.36 4.75z"
+            fill="currentColor" />
+        </svg>
+        Get the App
+      </a>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     HERO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <section class="hero" aria-labelledby="hero-heading">
+
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-glow" aria-hidden="true"></div>
+
+      <!-- ━━ Floating polyomino pieces (decorative) ━━ -->
+      <div class="fp-stage" aria-hidden="true">
+
+        <!-- LEFT SIDE ─────────────────── -->
+
+        <!-- L1 · Purple T-shape · top-left, partially off-screen -->
+        <div class="fp-pos" style="top:9%; left:-3%">
+          <div class="fp-tilt" style="transform:perspective(900px) rotateX(16deg) rotateY(28deg) rotateZ(-8deg)">
+            <div class="fp-bob" style="animation-duration:4.3s;animation-delay:-1.4s">
+              <div class="fp-grid" style="--gc:3;--gr:2">
+                <div class="fp-c cp"></div>
+                <div class="fp-c cp"></div>
+                <div class="fp-c cp"></div>
+                <div class="fp-e"></div>
+                <div class="fp-c cp"></div>
+                <div class="fp-e"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- L2 · Orange L-shape · mid-left -->
+        <div class="fp-pos" style="top:41%; left:-1%">
+          <div class="fp-tilt" style="transform:perspective(900px) rotateX(22deg) rotateY(-18deg) rotateZ(7deg)">
+            <div class="fp-bob" style="animation-duration:3.7s;animation-delay:-.8s">
+              <div class="fp-grid" style="--gc:2;--gr:3">
+                <div class="fp-c co"></div>
+                <div class="fp-e"></div>
+                <div class="fp-c co"></div>
+                <div class="fp-e"></div>
+                <div class="fp-c co"></div>
+                <div class="fp-c co"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- L3 · Red Z-shape · lower-left -->
+        <div class="fp-pos" style="top:69%; left:-2%">
+          <div class="fp-tilt" style="transform:perspective(900px) rotateX(-11deg) rotateY(24deg) rotateZ(-12deg)">
+            <div class="fp-bob" style="animation-duration:5.1s;animation-delay:-2.6s">
+              <div class="fp-grid" style="--gc:3;--gr:2">
+                <div class="fp-c cr"></div>
+                <div class="fp-c cr"></div>
+                <div class="fp-e"></div>
+                <div class="fp-e"></div>
+                <div class="fp-c cr"></div>
+                <div class="fp-c cr"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- L4 · Yellow 2×2 · upper-left background (dimmer, smaller) -->
+        <div class="fp-pos" style="top:23%; left:5%; opacity:.3">
+          <div class="fp-tilt" style="transform:perspective(900px) rotateX(30deg) rotateY(-22deg) rotateZ(-5deg)">
+            <div class="fp-bob" style="animation-duration:6.2s;animation-delay:-4.1s">
+              <div class="fp-grid" style="--gc:2;--gr:2;--fp:clamp(26px,2.4vw,40px)">
+                <div class="fp-c cy"></div>
+                <div class="fp-c cy"></div>
+                <div class="fp-c cy"></div>
+                <div class="fp-c cy"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT SIDE ─────────────────── -->
+
+        <!-- R1 · Teal S-shape · top-right, partially off-screen -->
+        <div class="fp-pos" style="top:7%; right:-3%">
+          <div class="fp-tilt" style="transform:perspective(900px) rotateX(19deg) rotateY(-28deg) rotateZ(11deg)">
+            <div class="fp-bob" style="animation-duration:4.0s;animation-delay:-.5s">
+              <div class="fp-grid" style="--gc:3;--gr:2">
+                <div class="fp-e"></div>
+                <div class="fp-c ct"></div>
+                <div class="fp-c ct"></div>
+                <div class="fp-c ct"></div>
+                <div class="fp-c ct"></div>
+                <div class="fp-e"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- R2 · Blue reverse-L · mid-right -->
+        <div class="fp-pos" style="top:40%; right:-2%">
+          <div class="fp-tilt" style="transform:perspective(900px) rotateX(-14deg) rotateY(-22deg) rotateZ(-9deg)">
+            <div class="fp-bob" style="animation-duration:4.7s;animation-delay:-2.0s">
+              <div class="fp-grid" style="--gc:2;--gr:3">
+                <div class="fp-e"></div>
+                <div class="fp-c cb"></div>
+                <div class="fp-e"></div>
+                <div class="fp-c cb"></div>
+                <div class="fp-c cb"></div>
+                <div class="fp-c cb"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- R3 · Pink T · lower-right, partially off-screen -->
+        <div class="fp-pos" style="top:70%; right:-3%">
+          <div class="fp-tilt" style="transform:perspective(900px) rotateX(21deg) rotateY(-16deg) rotateZ(14deg)">
+            <div class="fp-bob" style="animation-duration:3.9s;animation-delay:-3.1s">
+              <div class="fp-grid" style="--gc:3;--gr:2">
+                <div class="fp-e"></div>
+                <div class="fp-c cpk"></div>
+                <div class="fp-e"></div>
+                <div class="fp-c cpk"></div>
+                <div class="fp-c cpk"></div>
+                <div class="fp-c cpk"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- R4 · Green I-shape (3 cells) · right background, dimmer -->
+        <div class="fp-pos" style="top:56%; right:5%; opacity:.3">
+          <div class="fp-tilt" style="transform:perspective(900px) rotateX(25deg) rotateY(18deg) rotateZ(-8deg)">
+            <div class="fp-bob" style="animation-duration:5.5s;animation-delay:-1.7s">
+              <div class="fp-grid" style="--gc:1;--gr:3;--fp:clamp(24px,2.2vw,38px)">
+                <div class="fp-c cg"></div>
+                <div class="fp-c cg"></div>
+                <div class="fp-c cg"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /fp-stage -->
+
+      <!-- ━━ Hero text ━━ -->
+      <div class="hero-content w">
+
+        <p class="hero-badge">
+          <span class="badge-dot" aria-hidden="true"></span>
+          Available on the App Store · Free to try
+        </p>
+
+        <h1 id="hero-heading" class="t-display hero-hl"
+          aria-label="Premium block puzzle for iPhone and iPad, no ads, no subscription">
+          <span class="hl-plain">Premium block puzzle.</span>
+          <span class="hl-grad" aria-hidden="true">No ads. No sub.</span>
+        </h1>
+
+        <p class="hero-sub">
+          GridlockDice is a premium block puzzle for iPhone &amp; iPad — 50 hand-crafted levels
+          with fixed dice obstacles. Free to try. One-time purchase unlocks everything.
+          No ads, no subscription, no data collection.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#download" class="btn btn-white" aria-label="Download GridlockDice — free to try, 15 levels free">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.2 3.73 7.77 9.7 7.5c1.2.05 2.03.66 2.73.66.69 0 1.78-.81 3.12-.69.52.02 1.98.21 2.92 1.56-2.89 1.7-2.42 5.46.49 6.7-.58 1.48-1.32 2.95-2.91 4.55zM12.03 7.25c-.2-2.63 2.03-4.72 4.36-4.75.28 2.2-2.12 4.41-4.36 4.75z"
+                fill="currentColor" />
+            </svg>
+            Download Free — 15 Levels
+          </a>
+          <a href="#how" class="btn btn-ghost">How it works ↓</a>
+        </div>
+
+        <p style="margin-top: 1.25rem; font-size: .8125rem; color: var(--ink3); animation: fadeUp .82s .82s cubic-bezier(.16,1,.3,1) backwards;"
+          class="sr">
+          ★ Free to try · From £2.99 one-time · No subscription · No ads · No tracking
+        </p>
+      </div>
+
+      <!-- ━━ Stats strip ━━ -->
+      <div class="hero-stats w">
+        <dl class="stats-grid">
+          <div class="stat">
+            <dt class="stat-l">Levels</dt>
+            <dd class="stat-n">50</dd>
+          </div>
+          <div class="stat">
+            <dt class="stat-l">Free</dt>
+            <dd class="stat-n" style="color:var(--green)">15</dd>
+          </div>
+          <div class="stat">
+            <dt class="stat-l">Ads</dt>
+            <dd class="stat-n" style="color:var(--red)">0</dd>
+          </div>
+          <div class="stat">
+            <dt class="stat-l">Price</dt>
+            <dd class="stat-n" style="color:var(--teal)">Once</dd>
+          </div>
+        </dl>
+      </div>
+
+    </section><!-- /hero -->
+
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CONCEPT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <section class="s-concept section" aria-labelledby="concept-heading">
+      <div class="w concept-layout">
+
+        <div>
+          <p class="t-eye sh-tag sr" style="color:var(--teal)">What is GridlockDice?</p>
+          <h2 id="concept-heading" class="t-h2 sr d1" style="margin-bottom:1.25rem">
+            A block puzzle with a
+            <em style="font-style:normal; color:var(--orange)">twist.</em>
+          </h2>
+          <p class="t-body concept-body sr d2">
+            Drag colourful polyomino blocks onto a grid, filling every empty cell. But fixed white dice —
+            each stamped with a coordinate like <strong style="color:var(--ink);font-weight:700">A3</strong>
+            or <strong style="color:var(--ink);font-weight:700">C1</strong> — sit immovably in your path
+            and reshape every puzzle.
+          </p>
+          <p class="t-body concept-body sr d3" style="margin-top:1.25rem">
+            No two dice placements are alike. From level 21, tap any piece to rotate it 90°.
+            The same pieces, completely new geometry.
+          </p>
+        </div>
+
+        <div class="concept-vis sr d2"
+          aria-label="Solved 4×4 game board with red, green, teal and purple pieces and two white dice markers at A3 and C1">
+          <div class="mini-board" role="img" aria-label="Example completed puzzle">
+            <!-- Row A -->
+            <div class="mc mc-r" title="Red piece at A1"></div>
+            <div class="mc mc-r" title="Red piece at A2"></div>
+            <div class="mc mc-d" title="Fixed dice at A3">A3</div>
+            <div class="mc mc-t" title="Teal piece at A4"></div>
+            <!-- Row B -->
+            <div class="mc mc-r" title="Red piece at B1"></div>
+            <div class="mc mc-g" title="Green piece at B2"></div>
+            <div class="mc mc-g" title="Green piece at B3"></div>
+            <div class="mc mc-t" title="Teal piece at B4"></div>
+            <!-- Row C -->
+            <div class="mc mc-d" title="Fixed dice at C1">C1</div>
+            <div class="mc mc-g" title="Green piece at C2"></div>
+            <div class="mc mc-g" title="Green piece at C3"></div>
+            <div class="mc mc-t" title="Teal piece at C4"></div>
+            <!-- Row D -->
+            <div class="mc mc-p" title="Purple piece at D1"></div>
+            <div class="mc mc-p" title="Purple piece at D2"></div>
+            <div class="mc mc-p" title="Purple piece at D3"></div>
+            <div class="mc mc-p" title="Purple piece at D4"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     HOW IT WORKS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <section class="s-how section" id="how" aria-labelledby="how-heading">
+      <div class="w">
+
+        <div class="sh c">
+          <p class="t-eye sr" style="color:var(--purple)">Mechanics</p>
+          <h2 id="how-heading" class="t-h2 sr d1" style="margin:.875rem 0">
+            Learn in seconds.
+          </h2>
+          <p class="sh-sub sr d2">
+            Quick onboarding tutorials cover the rules in under a minute.
+            The depth only reveals itself as you progress.
+          </p>
+        </div>
+
+        <div class="how-grid sr">
+
+          <article class="how-card">
+            <div class="how-num" aria-hidden="true">1</div>
+            <div class="how-icon" style="background:rgba(255,58,45,.12)">
+              <svg viewBox="0 0 26 26" fill="none" aria-hidden="true">
+                <rect x="3" y="3" width="8" height="8" rx="2" fill="var(--red)" />
+                <rect x="15" y="3" width="8" height="8" rx="2" fill="var(--red)" opacity=".5" />
+                <rect x="3" y="15" width="8" height="8" rx="2" fill="var(--red)" opacity=".5" />
+                <rect x="15" y="15" width="8" height="8" rx="2" fill="var(--red)" opacity=".22" />
+              </svg>
+            </div>
+            <h3 class="how-title">Read the grid</h3>
+            <p class="how-desc">
+              The board appears labelled A–F down and 1–6 across. White dice mark fixed coordinate
+              positions. Reading that space — understanding what the dice block and what they leave
+              open — is the entire game.
+            </p>
+          </article>
+
+          <article class="how-card">
+            <div class="how-num" aria-hidden="true">2</div>
+            <div class="how-icon" style="background:rgba(10,132,255,.12)">
+              <svg viewBox="0 0 26 26" fill="none" aria-hidden="true">
+                <circle cx="13" cy="9" r="3" fill="var(--blue)" opacity=".55" />
+                <path d="M13 12v8M9 17l4 4 4-4" stroke="var(--blue)" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </div>
+            <h3 class="how-title">Drag the pieces</h3>
+            <p class="how-desc">
+              Colourful polyomino blocks sit in a scrollable tray below the grid. Drag them into
+              position. A green glow confirms a valid fit; red means it won't go. Haptics
+              respond to every placement, error, and solve.
+            </p>
+          </article>
+
+          <article class="how-card">
+            <div class="how-num" aria-hidden="true">3</div>
+            <div class="how-icon" style="background:rgba(48,209,88,.12)">
+              <svg viewBox="0 0 26 26" fill="none" aria-hidden="true">
+                <path d="M5 13.5L10.5 19L21 8" stroke="var(--green)" stroke-width="2.25" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </div>
+            <h3 class="how-title">Fill every cell</h3>
+            <p class="how-desc">
+              Cover every empty cell and the puzzle resolves — checkmark, star rating, your time.
+              A progress bar tracks your path from level 1 to 50. No timer pressure,
+              but the clock is always visible.
+            </p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     AUDIENCE / PROBLEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <section class="section" aria-labelledby="audience-heading"
+      style="background:var(--bg0); border-bottom:1px solid rgba(255,255,255,.05)">
+      <div class="w" style="max-width:680px; margin:0 auto; text-align:center">
+
+        <p class="t-eye sr" style="color:var(--orange); margin-bottom:.875rem">Who this is for</p>
+        <h2 id="audience-heading" class="t-h2 sr d1" style="margin-bottom:1.5rem">
+          Made for puzzle fans<br>
+          <em style="font-style:normal; color:var(--orange)">who expect more.</em>
+        </h2>
+
+        <div class="t-body sr d2" style="color:var(--ink2)">
+          <p style="margin-bottom:1.25rem">
+            You download a promising puzzle game. Within minutes there is a full-screen ad,
+            an energy bar counting down, or a subscription wall.
+          </p>
+          <p>
+            GridlockDice was built differently. One purchase. Zero ads. No energy bars.
+            No data tracking. 50 hand-crafted puzzles that respect your attention
+            and your privacy.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     FEATURES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <section class="s-feat section" aria-labelledby="feat-heading">
+      <div class="w">
+
+        <div class="sh c">
+          <p class="t-eye sr" style="color:var(--yellow)">Features</p>
+          <h2 id="feat-heading" class="t-h2 sr d1" style="margin:.875rem 0">
+            Everything included.
+          </h2>
+          <p class="sh-sub sr d2">
+            One purchase, no gating. Every feature and every level unlocked permanently.
+          </p>
+        </div>
+
+        <div class="feat-grid sr">
+
+          <article class="feat-card">
+            <div class="feat-bar" style="background:var(--red)"></div>
+            <h3 class="feat-title">Dice as obstacles</h3>
+            <p class="feat-desc">Fixed white dice mark specific coordinates — A1, C3, F5 — and sit
+              immovably in the grid. They replace generic blocked-cell patterns with spatial
+              logic grounded in the coordinate system.</p>
+          </article>
+
+          <article class="feat-card">
+            <div class="feat-bar" style="background:var(--orange)"></div>
+            <h3 class="feat-title">Guaranteed solvable</h3>
+            <p class="feat-desc">Levels 6–50 are procedurally generated, but every one is verified
+              by a backtracking solver before it ships. If it's in the game, at least one
+              valid solution exists. No unsolvable puzzles, ever.</p>
+          </article>
+
+          <article class="feat-card">
+            <div class="feat-bar" style="background:var(--green)"></div>
+            <h3 class="feat-title">Piece rotation</h3>
+            <p class="feat-desc">From level 21, tap a piece in the tray to rotate it 90°.
+              Four orientations, one touch. It layers geometric depth into the core mechanic
+              without changing how the game fundamentally works.</p>
+          </article>
+
+          <article class="feat-card">
+            <div class="feat-bar" style="background:var(--blue)"></div>
+            <h3 class="feat-title">Hint & auto-solve</h3>
+            <p class="feat-desc">The hint engine runs the built-in solver in real time and
+              highlights the next best placement. Auto-solve completes any level instantly with
+              animation. Both are always available — no strings attached.</p>
+          </article>
+
+          <article class="feat-card">
+            <div class="feat-bar" style="background:var(--purple)"></div>
+            <h3 class="feat-title">Native iOS craft</h3>
+            <p class="feat-desc">Built entirely in SwiftUI and SpriteKit. Spring animations,
+              precise haptic feedback, full VoiceOver support, reduced motion, and dynamic
+              sizing across every iPhone and iPad model.</p>
+          </article>
+
+          <article class="feat-card">
+            <div class="feat-bar" style="background:var(--pink)"></div>
+            <h3 class="feat-title">Zero third-party code</h3>
+            <p class="feat-desc">No SDKs, no trackers, no analytics. Pure Apple frameworks only.
+              127 automated tests ship with every release. The binary is lean,
+              behaviour is predictable, and your data never leaves your device.</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     LEVELS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <section class="s-levels section" aria-labelledby="levels-heading">
+      <div class="w">
+
+        <div class="sh c">
+          <p class="t-eye sr" style="color:var(--teal)">Progression</p>
+          <h2 id="levels-heading" class="t-h2 sr d1" style="margin:.875rem 0">
+            50 levels. Four sections.
+          </h2>
+          <p class="sh-sub sr d2">
+            Designed as a complete curriculum — from first-time puzzler to spatial thinker.
+          </p>
+        </div>
+
+        <div class="lev-grid sr">
+
+          <article class="lev-card">
+            <div class="lev-dots">
+              <span class="lev-dot on" style="color:var(--green)"></span>
+              <span class="lev-dot on" style="color:var(--green)"></span>
+              <span class="lev-dot on" style="color:var(--green)"></span>
+              <span class="lev-dot on" style="color:var(--green)"></span>
+              <span class="lev-dot on" style="color:var(--green)"></span>
+            </div>
+            <p class="lev-label" style="color:var(--green)">Tutorial</p>
+            <p class="lev-range" style="color:var(--green)">1 – 5</p>
+            <p class="lev-desc">Introduces drag mechanics, placement feedback, dice blockers, and
+              coordinate reading. Completable in under five minutes.</p>
+            <span class="lev-free">Free</span>
+          </article>
+
+          <article class="lev-card">
+            <div class="lev-dots">
+              <span class="lev-dot on" style="color:var(--blue)"></span>
+              <span class="lev-dot on" style="color:var(--blue)"></span>
+              <span class="lev-dot on" style="color:var(--blue)"></span>
+              <span class="lev-dot on" style="color:var(--blue)"></span>
+              <span class="lev-dot on" style="color:var(--blue)"></span>
+              <span class="lev-dot on" style="color:var(--blue)"></span>
+              <span class="lev-dot on" style="color:var(--blue)"></span>
+              <span class="lev-dot on" style="color:var(--blue)"></span>
+              <span class="lev-dot on" style="color:var(--blue)"></span>
+              <span class="lev-dot on" style="color:var(--blue)"></span>
+            </div>
+            <p class="lev-label" style="color:var(--blue)">Beginner</p>
+            <p class="lev-range" style="color:var(--blue)">6 – 15</p>
+            <p class="lev-desc">Larger grids, more pieces, tighter fits. No rotation yet —
+              pure spatial instinct on a 4×4 canvas.</p>
+            <span class="lev-free">Free</span>
+          </article>
+
+          <article class="lev-card">
+            <div class="lev-dots">
+              <span class="lev-dot on" style="color:var(--orange)"></span>
+              <span class="lev-dot on" style="color:var(--orange)"></span>
+              <span class="lev-dot on" style="color:var(--orange)"></span>
+              <span class="lev-dot on" style="color:var(--orange)"></span>
+              <span class="lev-dot on" style="color:var(--orange)"></span>
+              <span class="lev-dot on" style="color:var(--orange)"></span>
+              <span class="lev-dot on" style="color:var(--orange)"></span>
+              <span class="lev-dot on" style="color:var(--orange)"></span>
+              <span class="lev-dot on" style="color:var(--orange)"></span>
+              <span class="lev-dot on" style="color:var(--orange)"></span>
+              <span class="lev-dot on" style="color:var(--orange)"></span>
+              <span class="lev-dot on" style="color:var(--orange)"></span>
+              <span class="lev-dot on" style="color:var(--orange)"></span>
+              <span class="lev-dot on" style="color:var(--orange)"></span>
+              <span class="lev-dot on" style="color:var(--orange)"></span>
+            </div>
+            <p class="lev-label" style="color:var(--orange)">Rotation</p>
+            <p class="lev-range" style="color:var(--orange)">16 – 30</p>
+            <p class="lev-desc">Piece rotation unlocked. 5×5 grids. Levels designed so
+              rotation isn't optional — it's the key.</p>
+          </article>
+
+          <article class="lev-card">
+            <div class="lev-dots">
+              <span class="lev-dot on" style="color:var(--red)"></span>
+              <span class="lev-dot on" style="color:var(--red)"></span>
+              <span class="lev-dot on" style="color:var(--red)"></span>
+              <span class="lev-dot on" style="color:var(--red)"></span>
+              <span class="lev-dot on" style="color:var(--red)"></span>
+              <span class="lev-dot on" style="color:var(--red)"></span>
+              <span class="lev-dot on" style="color:var(--red)"></span>
+              <span class="lev-dot on" style="color:var(--red)"></span>
+              <span class="lev-dot on" style="color:var(--red)"></span>
+              <span class="lev-dot on" style="color:var(--red)"></span>
+              <span class="lev-dot on" style="color:var(--red)"></span>
+              <span class="lev-dot on" style="color:var(--red)"></span>
+              <span class="lev-dot on" style="color:var(--red)"></span>
+              <span class="lev-dot on" style="color:var(--red)"></span>
+              <span class="lev-dot on" style="color:var(--red)"></span>
+              <span class="lev-dot on" style="color:var(--red)"></span>
+              <span class="lev-dot on" style="color:var(--red)"></span>
+              <span class="lev-dot on" style="color:var(--red)"></span>
+              <span class="lev-dot on" style="color:var(--red)"></span>
+              <span class="lev-dot on" style="color:var(--red)"></span>
+            </div>
+            <p class="lev-label" style="color:var(--red)">Advanced</p>
+            <p class="lev-range" style="color:var(--red)">31 – 50</p>
+            <p class="lev-desc">6×6 grids, complex piece sets, multiple dice. Built for people
+              who've earned the challenge.</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     PROMISE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <section class="s-promise section" aria-labelledby="promise-heading">
+      <div class="w promise-layout">
+
+        <div class="promise-sticky">
+          <p class="t-eye sr" style="color:var(--green); margin-bottom:.875rem">The promise</p>
+          <h2 id="promise-heading" class="t-h2 sr d1">
+            Premium means<br>
+            <em style="font-style:normal; color:var(--green)">no compromises.</em>
+          </h2>
+          <p class="promise-lead sr d2">
+            GridlockDice was built for people who are tired of games that treat players as
+            monetisation targets. It's a tool for thinking — nothing more, nothing less.
+          </p>
+        </div>
+
+        <ul class="promise-list sr" aria-label="Premium commitments">
+
+          <li class="pi">
+            <span class="pi-ico" style="background:rgba(48,209,88,.12)" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <path d="M4 11L9 16 18 7" stroke="var(--green)" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </span>
+            <div class="pi-txt">
+              <h3>Zero ads, ever</h3>
+              <p>No banners, interstitials, videos, or rewarded ads. No advertising infrastructure
+                in the binary. The game earns its living through one honest transaction, then
+                leaves you alone.</p>
+            </div>
+          </li>
+
+          <li class="pi">
+            <span class="pi-ico" style="background:rgba(10,132,255,.12)" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <circle cx="11" cy="11" r="7" stroke="var(--blue)" stroke-width="2" />
+                <path d="M11 8v4l3 2" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </span>
+            <div class="pi-txt">
+              <h3>No subscription, no energy</h3>
+              <p>One payment unlocks all 50 levels permanently. No monthly fees, no daily limits,
+                no energy bars, no wait timers, no forced pauses. Play on your schedule.</p>
+            </div>
+          </li>
+
+          <li class="pi">
+            <span class="pi-ico" style="background:rgba(191,90,242,.12)" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <rect x="4" y="4" width="14" height="14" rx="3" stroke="var(--purple)" stroke-width="2" />
+                <path d="M4 9h14" stroke="var(--purple)" stroke-width="1.5" stroke-linecap="round" />
+                <circle cx="8" cy="13.5" r="1" fill="var(--purple)" />
+                <circle cx="11" cy="13.5" r="1" fill="var(--purple)" />
+                <circle cx="14" cy="13.5" r="1" fill="var(--purple)" />
+              </svg>
+            </span>
+            <div class="pi-txt">
+              <h3>Privacy-first by design</h3>
+              <p>No account required. No data collection, no analytics, no telemetry, no push
+                notifications. Nothing phones home. Your play session lives entirely on your device.</p>
+            </div>
+          </li>
+
+          <li class="pi">
+            <span class="pi-ico" style="background:rgba(90,200,250,.12)" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <path d="M11 3L3 11 11 19 19 11Z" stroke="var(--teal)" stroke-width="1.75" stroke-linejoin="round" />
+                <circle cx="11" cy="11" r="2" fill="var(--teal)" opacity=".4" />
+              </svg>
+            </span>
+            <div class="pi-txt">
+              <h3>Accessibility throughout</h3>
+              <p>Full VoiceOver support. Reduced motion respected. Haptic feedback that assists
+                rather than distracts. Dynamic type sizing on iPad. Built for everyone,
+                not just the default user.</p>
+            </div>
+          </li>
+
+          <li class="pi">
+            <span class="pi-ico" style="background:rgba(255,55,95,.12)" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <path d="M5 7h12M5 11h9M5 15h6" stroke="var(--pink)" stroke-width="1.75" stroke-linecap="round" />
+              </svg>
+            </span>
+            <div class="pi-txt">
+              <h3>127 tests. Solver-verified.</h3>
+              <p>Every procedurally generated level passes a backtracking solver before shipping.
+                No unsolvable puzzles, no dead ends by design error. Automated tests run
+                before every release.</p>
+            </div>
+          </li>
+
+        </ul>
+
+      </div>
+    </section>
+
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     FAQ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <section class="section" aria-labelledby="faq-heading"
+      style="background:var(--bg1); border-top:1px solid rgba(255,255,255,.05); border-bottom:1px solid rgba(255,255,255,.05)">
+      <div class="w" style="max-width:720px; margin:0 auto">
+
+        <div class="sh c">
+          <p class="t-eye sr" style="color:var(--teal)">FAQ</p>
+          <h2 id="faq-heading" class="t-h2 sr d1" style="margin:.875rem 0">
+            Common questions.
+          </h2>
+        </div>
+
+        <div
+          style="display:flex; flex-direction:column; gap:2px; border-radius:16px; overflow:hidden; background:var(--bg4)">
+
+          <details style="width:100%; padding:1.5rem 1.75rem; cursor:pointer; background:var(--bg2); border:none">
+            <summary style="font-weight:700; font-size:1rem; letter-spacing:-.01em; outline:none; cursor:pointer">
+              Is GridlockDice free?
+            </summary>
+            <p style="color:var(--ink2); font-size:.875rem; line-height:1.65; margin-top:.75rem">
+              The first 15 levels are completely free to play — no time limit, no feature gating.
+              If you enjoy it, unlock all 50 levels with a single one-time purchase.
+            </p>
+          </details>
+
+          <details style="width:100%; padding:1.5rem 1.75rem; cursor:pointer; background:var(--bg2); border:none">
+            <summary style="font-weight:700; font-size:1rem; letter-spacing:-.01em; outline:none; cursor:pointer">
+              Does GridlockDice have ads?
+            </summary>
+            <p style="color:var(--ink2); font-size:.875rem; line-height:1.65; margin-top:.75rem">
+              Zero. No banners, no interstitials, no rewarded video ads, no advertising SDK
+              in the binary. The game earns its living through one honest transaction.
+            </p>
+          </details>
+
+          <details style="width:100%; padding:1.5rem 1.75rem; cursor:pointer; background:var(--bg2); border:none">
+            <summary style="font-weight:700; font-size:1rem; letter-spacing:-.01em; outline:none; cursor:pointer">
+              How much does it cost?
+            </summary>
+            <p style="color:var(--ink2); font-size:.875rem; line-height:1.65; margin-top:.75rem">
+              The full game is a one-time purchase starting at £2.99 (pricing varies by App Store
+              region). No subscription, no renewal fees, no hidden costs.
+            </p>
+          </details>
+
+          <details style="width:100%; padding:1.5rem 1.75rem; cursor:pointer; background:var(--bg2); border:none">
+            <summary style="font-weight:700; font-size:1rem; letter-spacing:-.01em; outline:none; cursor:pointer">
+              Is it a subscription?
+            </summary>
+            <p style="color:var(--ink2); font-size:.875rem; line-height:1.65; margin-top:.75rem">
+              No. A single purchase unlocks all 50 levels permanently. No monthly fees,
+              no annual plans, no auto-renewal.
+            </p>
+          </details>
+
+          <details style="width:100%; padding:1.5rem 1.75rem; cursor:pointer; background:var(--bg2); border:none">
+            <summary style="font-weight:700; font-size:1rem; letter-spacing:-.01em; outline:none; cursor:pointer">
+              What is a polyomino puzzle?
+            </summary>
+            <p style="color:var(--ink2); font-size:.875rem; line-height:1.65; margin-top:.75rem">
+              A polyomino is a shape made of connected squares — like Tetris pieces.
+              In GridlockDice, you drag these colourful shapes onto a grid to fill every cell,
+              working around fixed dice that act as obstacles.
+            </p>
+          </details>
+
+          <details style="width:100%; padding:1.5rem 1.75rem; cursor:pointer; background:var(--bg2); border:none">
+            <summary style="font-weight:700; font-size:1rem; letter-spacing:-.01em; outline:none; cursor:pointer">
+              Does GridlockDice work on iPad?
+            </summary>
+            <p style="color:var(--ink2); font-size:.875rem; line-height:1.65; margin-top:.75rem">
+              Yes. The game runs natively on iPad with dynamic sizing, full VoiceOver support,
+              and all 50 levels available at any screen size.
+            </p>
+          </details>
+
+          <details style="width:100%; padding:1.5rem 1.75rem; cursor:pointer; background:var(--bg2); border:none">
+            <summary style="font-weight:700; font-size:1rem; letter-spacing:-.01em; outline:none; cursor:pointer">
+              Can I restore my purchase?
+            </summary>
+            <p style="color:var(--ink2); font-size:.875rem; line-height:1.65; margin-top:.75rem">
+              Yes. If you unlock the full game, you can restore your purchase on any device
+              using the same Apple ID — no account or login required.
+            </p>
+          </details>
+
+          <details style="width:100%; padding:1.5rem 1.75rem; cursor:pointer; background:var(--bg2); border:none">
+            <summary style="font-weight:700; font-size:1rem; letter-spacing:-.01em; outline:none; cursor:pointer">
+              Does the game require internet?
+            </summary>
+            <p style="color:var(--ink2); font-size:.875rem; line-height:1.65; margin-top:.75rem">
+              No. Once downloaded, the entire game runs offline. No account, no login,
+              no data sent anywhere.
+            </p>
+          </details>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     DOWNLOAD CTA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <section class="s-cta section" id="download" aria-labelledby="cta-heading">
+      <div class="cta-glow" aria-hidden="true"></div>
+      <div class="w cta-inner">
+
+        <p class="t-eye sr" style="color:var(--purple); margin-bottom:1rem">Download</p>
+
+        <h2 id="cta-heading" class="cta-hl sr d1" aria-label="Download free. Decide later.">
+          Download free.<br>
+          <span class="grad-cta">Decide later.</span>
+        </h2>
+
+        <p class="cta-sub sr d2">
+          The first 15 levels are yours to explore, no strings attached.
+          If the game earns its place on your Home Screen, unlock the rest with one tap.
+        </p>
+
+        <div class="price-pill sr d3" aria-label="Price: from 2 pounds 99, one-time purchase">
+          <span class="price-amt">From £2.99</span>
+          <span class="price-note">· one-time · no subscription</span>
+        </div>
+
+        <div class="cta-actions sr d4">
+          <a href="#" class="as-badge" role="button" aria-label="Download GridlockDice on the App Store">
+            <span class="as-icon" aria-hidden="true">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.2 3.73 7.77 9.7 7.5c1.2.05 2.03.66 2.73.66.69 0 1.78-.81 3.12-.69.52.02 1.98.21 2.92 1.56-2.89 1.7-2.42 5.46.49 6.7-.58 1.48-1.32 2.95-2.91 4.55zM12.03 7.25c-.2-2.63 2.03-4.72 4.36-4.75.28 2.2-2.12 4.41-4.36 4.75z"
+                  fill="currentColor" />
+              </svg>
+            </span>
+            <span class="as-txt">
+              <span class="as-top">Download on the</span>
+              <span class="as-bot">App Store</span>
+            </span>
+          </a>
+        </div>
+
+        <p class="cta-fine sr">
+          Requires iOS / iPadOS 17 or later · Restore Purchase available ·
+          Pricing set by local App Store region
+        </p>
+
+      </div>
+    </section>
+
+  </main><!-- /main -->
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     FOOTER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <footer class="footer" role="contentinfo">
+    <div class="w foot-row">
+      <span class="foot-brand">
+        <img src="icon.webp" alt="" width="20" height="20" class="foot-brand-icon" aria-hidden="true">
+        GridlockDice
+      </span>
+      <nav aria-label="Footer">
+        <ul class="foot-nav">
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms &amp; Conditions</a></li>
+          <li><a href="/">Home</a></li>
+        </ul>
+      </nav>
+      <span class="foot-copy">© 2025 GridlockDice</span>
+    </div>
+  </footer>
+
+
+  <script>
+    /* ── Nav scroll effect ── */
+    const nav = document.getElementById('nav');
+    function updateNav() {
+      nav.classList.toggle('scrolled', window.scrollY > 16);
+    }
+    window.addEventListener('scroll', updateNav, { passive: true });
+    updateNav();
+
+    /* ── Scroll reveal ── */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -32px 0px' });
+
+    document.querySelectorAll('.sr').forEach(el => io.observe(el));
+  </script>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "GridlockDice",
+  "operatingSystem": "iOS 17, iPadOS 17",
+  "applicationCategory": "GameApplication",
+  "description": "Premium block puzzle for iPhone & iPad. 50 hand-crafted polyomino levels with dice obstacles. No ads, no subscription, one-time purchase.",
+  "offers": {
+    "@type": "Offer",
+    "price": "2.99",
+    "priceCurrency": "GBP",
+    "priceValidUntil": "2027-12-31",
+    "availability": "https://schema.org/InStock"
+  }
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is GridlockDice free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The first 15 levels are completely free to play with no time limit or feature gating. Unlock all 50 levels with a single one-time purchase."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does GridlockDice have ads?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Zero ads. No banners, interstitials, rewarded video ads, or advertising SDK in the binary."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does GridlockDice cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The full game is a one-time purchase starting at £2.99. No subscription, no renewal fees."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is GridlockDice a subscription?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. A single purchase unlocks all 50 levels permanently. No monthly fees, no annual plans."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does GridlockDice work on iPad?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The game runs natively on iPad with dynamic sizing, full VoiceOver support, and all 50 levels available."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does GridlockDice require internet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Once downloaded, the entire game runs offline. No account, no login, no data sent anywhere."
+      }
+    }
+  ]
+}
+</script>
+
+</body>
+
+</html>
