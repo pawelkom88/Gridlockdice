@@ -143,7 +143,7 @@ struct OnboardingOverlayView: View {
                 Text("White cells represent pre-placed blockages (dice). These act as walls and cannot be moved or covered.")
                     .font(.system(size: isPad ? 18 : 12))
                     .foregroundStyle(Color.label3)
-                    .lineLimit(3)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             .padding(isPad ? 18 : 12)
             .background(Color.bg2)
@@ -186,12 +186,14 @@ struct OnboardingOverlayView: View {
                     Text("Green overlay indicates a valid placement.")
                         .font(.system(size: isPad ? 18 : 12))
                         .foregroundStyle(Color.label2)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
                 HStack(spacing: isPad ? 12 : 8) {
                     Circle().fill(Color.accentRed).frame(width: isPad ? 12 : 8, height: isPad ? 12 : 8)
                     Text("Red overlay indicates blocked or overlapping space.")
                         .font(.system(size: isPad ? 18 : 12))
                         .foregroundStyle(Color.label2)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
             .padding(.horizontal, 28)

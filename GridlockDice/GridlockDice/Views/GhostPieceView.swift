@@ -21,6 +21,12 @@ struct GhostPieceView: View {
                     .strokeBorder(Color.white.opacity(0.07), lineWidth: 0.5)
             )
             .opacity(0.28)
+            .overlay(alignment: .bottomTrailing) {
+                Image(systemName: "arrowshape.turn.up.backward.fill")
+                    .font(.system(size: 7))
+                    .foregroundStyle(Color.label4.opacity(0.5))
+                    .padding(4)
+            }
             .onTapGesture(perform: onTap)
     }
 }
